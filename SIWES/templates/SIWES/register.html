@@ -1,0 +1,84 @@
+{% extends 'SIWES/base.html' %}
+{% load static %}
+{% block content %}
+
+  <div class="login-page">
+    <div>
+        <img src="{% static 'images/transparentlogbook.png' %}">
+    </div>
+
+
+    <div class="login-form" style="margin-top: 0px;">
+        <h1>Register to Log<span style="color: blue; font-family: 'Orbitron', sans-serif ;font-size: 3rem;">Track</span></h1>
+
+    <form method="POST" action="{% url 'register' %}">
+        {% csrf_token %}
+        {% if form.errors %}
+            <div class="alert alert-danger">
+                <ul>
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <li>{{ field.label }}: {{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+                {% for error in form.non_field_errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+        <div class="input-group">
+            {{ form.email }}<br><br>
+        </div>
+        <div class="input-group">
+            {{ form.fullname }}<br><br>
+        </div>
+        <div class="input-group">
+            {{ form.password1 }}<br><br>
+        </div>
+        <div class="input-group">
+            {{ form.password2 }}<br><br>
+        </div>
+        <div class="input-group">
+            {{ form.user_type }}<br><br>
+        </div>
+        <div class="input-group" id="titleField" style="display: none;">
+            {{ form.title }}<br><br>
+        </div>
+        <div class="input-group" id="matricField" style="display: none;">
+            {{ form.matric_number }}<br><br>
+        </div>
+        <button type="submit" id="submit">Register</button>
+        <p class="login-account">Already have an account? <a href="{% url 'login' %}" style="text-decoration: none; color: blue;">Login</a></p>
+    </form>
+    </div>
+  
+
+<script>
+// Show/hide matric number and title fields based on user_type select
+document.addEventListener('DOMContentLoaded', function() {
+    var userTypeSelect = document.getElementById('id_user_type');
+    var matricField = document.getElementById('matricField');
+    var titleField = document.getElementById('titleField');
+    function toggleFields() {
+        if (userTypeSelect.value === 'student') {
+            matricField.style.display = 'block';
+            titleField.style.display = 'none';
+        } else if (userTypeSelect.value === 'supervisor') {
+            matricField.style.display = 'none';
+            titleField.style.display = 'block';
+        } else {
+            matricField.style.display = 'none';
+            titleField.style.display = 'none';
+        }
+    }
+    if (userTypeSelect) {
+        userTypeSelect.addEventListener('change', toggleFields);
+        toggleFields();
+    }
+});
+</script>
+
+</div>
+
+{% endblock %}

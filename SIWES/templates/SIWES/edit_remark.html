@@ -1,0 +1,16 @@
+{% extends 'SIWES/base.html' %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'supervisor_dashboard.css' %}">
+<div class="login-page">
+  <div class="login-form">
+    <h1>Edit Remark</h1>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="approve-btn">Save Remark</button>
+      <a href="{% url 'supervisor_dashboard' %}" style="margin-left: 1rem;">Cancel</a>
+    </form>
+  </div>
+</div>
+{% endblock %}

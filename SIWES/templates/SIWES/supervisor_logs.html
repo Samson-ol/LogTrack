@@ -1,0 +1,64 @@
+{% extends 'SIWES/base.html' %}
+{% load static %}
+{% load tz %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'supervisor_logs.css' %}">
+<div class="supervisor-logs-container">
+  <h2 class="supervisor-logs-title">Student Logs History</h2>
+  <form method="get" class="supervisor-logs-filter-form" style="margin-bottom:2rem;display:flex;flex-wrap:wrap;gap:1.2rem;align-items:center;justify-content:center;padding:0.5rem;border-radius:12px;box-shadow:0 1px 4px rgba(30,41,59,0.06);">
+    <div>
+      <label for="student" style="font-weight:600;color:#2563eb;">Student:</label>
+      <select name="student" id="student" style="padding:7px 12px;border-radius:7px;border:1.5px solid #2563eb;font-size:1.05rem;">
+        <option value="">All</option>
+        {% for student in students %}
+          <option value="{{ student.matric_number }}" {% if request.GET.student == student.matric_number %}selected{% endif %}>{{ student.matric_number }} - {{ student.get_full_name|default:student.email }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div>
+      <label for="start_date" style="font-weight:600;color:#2563eb;">Start Date:</label>
+      <input type="date" name="start_date" id="start_date" value="{{ request.GET.start_date|default:'' }}" style="padding:7px 12px;border-radius:7px;border:1.5px solid #2563eb;font-size:1.05rem;">
+    </div>
+    <div>
+      <label for="end_date" style="font-weight:600;color:#2563eb;">End Date:</label>
+      <input type="date" name="end_date" id="end_date" value="{{ request.GET.end_date|default:'' }}" style="padding:7px 12px;border-radius:7px;border:1.5px solid #2563eb;font-size:1.05rem;">
+    </div>
+    <div>
+      <label for="status" style="font-weight:600;color:#2563eb;">Status:</label>
+      <select name="status" id="status" style="padding:7px 12px;border-radius:7px;border:1.5px solid #2563eb;font-size:1.05rem;">
+        <option value="">All</option>
+        <option value="approved" {% if request.GET.status == 'approved' %}selected{% endif %}>Approved</option>
+        <option value="pending" {% if request.GET.status == 'pending' %}selected{% endif %}>Pending</option>
+      </select>
+    </div>
+    <button type="submit" style="padding:7px 22px;background:#2563eb;color:#fff;border:none;border-radius:7px;font-size:1.05rem;font-weight:600;">Filter</button>
+    {% if request.GET.student or request.GET.start_date or request.GET.end_date or request.GET.status %}
+      <a href="{% url 'supervisor_logs' %}" style="padding:7px 22px;background:#e0e7ff;color:#2563eb;border:1.5px solid #2563eb;border-radius:7px;font-size:1.05rem;font-weight:600;text-decoration:none;">Clear</a>
+    {% endif %}
+  <a href="?{% if request.GET.student %}student={{ request.GET.student|urlencode }}&{% endif %}{% if request.GET.start_date %}start_date={{ request.GET.start_date|urlencode }}&{% endif %}{% if request.GET.end_date %}end_date={{ request.GET.end_date|urlencode }}&{% endif %}{% if request.GET.status %}status={{ request.GET.status|urlencode }}&{% endif %}export=pdf" style="padding:7px 22px;background:#059669;color:#fff;border:none;border-radius:7px;font-size:1.05rem;font-weight:600;text-decoration:none;">Download PDF</a>
+  </form>
+  <div class="supervisor-logs-table-container">
+    <div class="supervisor-logs-cards-container">
+      {% for submission in submissions %}
+      <div class="supervisor-log-card" style="background:#f1f5f9;border-radius:10px;box-shadow:0 2px 8px rgba(30,41,59,0.07);margin-bottom:1.5rem;padding:1.3rem 1.5rem;display:flex;flex-direction:column;gap:0.7rem;">
+        <div style="display:flex;flex-wrap:wrap;gap:1.2rem;align-items:center;justify-content:space-between;">
+          <div><strong style="color:#2563eb;">Matric:</strong> {{ submission.matric_number }}</div>
+          <div><strong style="color:#2563eb;">Date:</strong> {{ submission.date|localtime|date:'Y-m-d H:i' }}</div>
+          <div><strong style="color:#2563eb;">Status:</strong> {% if submission.approved %}<span class="approved">Approved</span>{% else %}<span class="pending">Pending</span>{% endif %}</div>
+        </div>
+        <div><strong style="color:#1e293b;">Overview:</strong> {{ submission.overview|default:'-' }}</div>
+        <div><strong style="color:#1e293b;">Description:</strong><br>
+          <span style="display:block;max-height:120px;overflow:auto;background:#e0e7ff;padding:10px 14px;border-radius:8px;margin-top:4px;white-space:pre-line;">{{ submission.text }}</span>
+        </div>
+        <div><strong style="color:#1e293b;">File:</strong> {% if submission.file %}<a href="{{ submission.file.url }}" target="_blank" style="color:#2563eb;text-decoration:underline;">View File</a>{% else %}<span style="color:#b91c1c;">No file</span>{% endif %}</div>
+        <div><strong style="color:#1e293b;">Remark:</strong><br>
+          <span style="display:block;max-height:120px;overflow:auto;background:#f1f5f9;padding:10px 14px;border-radius:8px;margin-top:4px;white-space:pre-line;color:#2563eb;">{{ submission.remark|default:'No remark yet.' }}</span>
+        </div>
+      </div>
+      {% empty %}
+      <div class="no-logs" style="text-align:center;color:#b91c1c;font-weight:600;padding:2rem 0;">No logs found.</div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

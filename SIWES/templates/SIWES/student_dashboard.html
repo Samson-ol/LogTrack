@@ -1,0 +1,149 @@
+{% extends 'SIWES/base.html' %}
+{% load static %}
+{% load tz %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'student_dashboard.css' %}">
+<div class="login-page">
+  <div class="login-form">
+    <h1>Welcome, <span style="color: rgb(58, 56, 56); font-family: 'Orbitron', sans-serif;">{{ user.matric_number }} </span></h1>
+    {% if supervisor %}
+      <div style="background: #e0e7ff; border-left: 6px solid #2563eb; border-radius: 8px; padding: 1rem 1.5rem; margin-bottom: 1.5rem; display: flex; align-items: center; box-shadow: 0 2px 8px rgba(30,41,59,0.06);">
+        <svg style="margin-right: 1rem; color: #2563eb; min-width: 32px;" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/></svg>
+        <div>
+          <div style="font-size: 1.1rem; color: #2563eb; font-weight: 600;">Your Supervisor</div>
+          <div style="font-size: 1.2rem; color: #1e293b; font-weight: 700;">
+            {% if supervisor.title %}{{ supervisor.title }} {% endif %}{{ supervisor.get_full_name|default:supervisor.email }}
+          </div>
+        </div>
+      </div>
+    {% else %}
+      <div style="background: #fff7ed; border-left: 6px solid #f59e42; border-radius: 8px; padding: 1rem 1.5rem; margin-bottom: 1.5rem; color: #b45309; font-weight: 600; box-shadow: 0 2px 8px rgba(30,41,59,0.04);">
+        No supervisor assigned yet.
+      </div>
+    {% endif %}
+    <button id="open-log-modal" style="background:#2563eb;color:#fff;padding:10px 24px;border:none;border-radius:8px;font-size:1.1rem;margin-bottom:1.2rem;cursor:pointer;">Enter your log</button>
+    <!-- Modal Popup for Log Entry -->
+    <div id="log-modal" style="display:none;position:fixed;z-index:1000;left:0;top:0;width:100vw;height:100vh;background:rgba(30,41,59,0.18);overflow:auto;">
+      <div style="background:#f8fafc;max-width:500px;width:96vw;margin:5% auto;padding:2rem 2.5rem 1.5rem 2.5rem;border-radius:18px;box-shadow:0 8px 32px rgba(30,41,59,0.13);position:relative;">
+        <button id="close-log-modal" style="position:absolute;top:12px;right:18px;font-size:2rem;background:none;border:none;cursor:pointer;color:#2563eb;">&times;</button>
+        <h2 style="color:#2563eb;margin-bottom:1.2rem;font-family:'Orbitron',sans-serif;font-size:1.5rem;letter-spacing:1px;">Enter Your Daily Log</h2>
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="input-group">
+            <input type="text" name="overview" class="form-control" placeholder="Overview of what you did today..." required><br><br>
+          </div>
+          <div class="input-group">
+            <textarea name="text" class="form-control" placeholder="Describe in detail what you did today..." required></textarea><br><br>
+          </div>
+          <div class="input-group">
+            <input type="file" name="file" class="form-control"><br><br>
+          </div>
+          <button type="submit" id="submit" style="background:#2563eb;color:#fff;padding:8px 22px;border:none;border-radius:7px;font-size:1.08rem;">Submit</button>
+        </form>
+      </div>
+    </div>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        var openBtn = document.getElementById('open-log-modal');
+        var modal = document.getElementById('log-modal');
+        var closeBtn = document.getElementById('close-log-modal');
+        openBtn.addEventListener('click', function() {
+          modal.style.display = 'block';
+        });
+        closeBtn.addEventListener('click', function() {
+          modal.style.display = 'none';
+        });
+        // Close modal on background click
+        modal.addEventListener('click', function(e) {
+          if (e.target === modal) {
+            modal.style.display = 'none';
+          }
+        });
+      });
+    </script>
+    <h3 style="margin-top:2rem;">Your Submissions</h3>
+    <form method="get" id="student-filter-form" >
+      <div style="display: flex; align-items: center; gap: 0.7rem; flex-wrap: wrap;">
+        <div style="display:flex;align-items:center;gap:6px;">
+          <span style="color: black;">Start date</span>
+          <input type="date" id="start_date" name="start_date" value="{{ start_date|default:'' }}" style="padding:3px 7px;border-radius:5px;border:1px solid #2563eb;font-size:0.98rem;">
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;">
+          <span style="color: black;">End date</span>
+          <input type="date" id="end_date" name="end_date" value="{{ end_date|default:'' }}" style="padding:3px 7px;border-radius:5px;border:1px solid #2563eb;font-size:0.98rem;">
+        </div>
+        <button type="submit" class="btn" style="padding:7px 22px;background:#2563eb;color:#fff;border:none;border-radius:7px;font-size:1.05rem;font-weight:600;">Filter</button>
+        {% if start_date or end_date %}
+          <a href="?" class="btn" style="background: #e0e7ff; color: #2563eb; border: 1px solid #2563eb; margin-left: 6px;">Clear</a>
+        {% endif %}
+        <a href="?{% if start_date %}start_date={{ start_date|urlencode }}&{% endif %}{% if end_date %}end_date={{ end_date|urlencode }}&{% endif %}export=pdf" style="padding:7px 22px;background:#059669;color:#fff;border:none;border-radius:7px;font-size:1.05rem;font-weight:600;text-decoration:none;">Download PDF</a>
+      </div>
+    </form>
+    <ul>
+      {% for submission in submissions %}
+        <li style="margin-bottom: 1.2rem;">
+          <strong>{{ submission.date|localtime|date:'Y-m-d H:i' }}</strong>: {{ submission.overview|default:'No overview'|truncatewords:10 }}
+          <button class="view-submission-btn" data-id="{{ submission.id }}" style="margin-left:10px;padding:2px 12px;font-size:0.98rem;background:#e0e7ff;color:#2563eb;border-radius:6px;border:none;cursor:pointer;">View</button>
+          {% if submission.file %}
+            | <a href="{{ submission.file.url }}" target="_blank">View File</a>
+          {% endif %}
+          {% if submission.approved %}
+            <span style="color:green;">(Approved)</span>
+            {% if submission.remark %}<br><span style="color:#2563eb;"><strong>Remark:</strong> {{ submission.remark }}</span>{% endif %}
+
+          {% else %}
+            <span style="color:orange;">(Pending)</span>
+            | <a href="{% url 'edit_submission' submission.id %}" style="color:#2563eb;">Edit</a>
+            | <form method="post" action="{% url 'delete_submission' submission.id %}" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this submission?');">
+                {% csrf_token %}
+                <button type="submit" style="background:#b91c1c;color:#fff;border:none;padding:2px 10px;border-radius:5px;cursor:pointer;">Delete</button>
+              </form>
+          {% endif %}
+
+          <!-- Modal for viewing submission -->
+          <div id="submission-modal-{{ submission.id }}" class="submission-modal" style="display:none;position:fixed;z-index:1000;left:0;top:0;width:100vw;height:100vh;background:rgba(30,41,59,0.18);overflow:auto;">
+            <div style="background:#f8fafc;max-width:500px;width:96vw;margin:5% auto;padding:2rem 2.5rem 1.5rem 2.5rem;border-radius:18px;box-shadow:0 8px 32px rgba(30,41,59,0.13);position:relative;">
+              <button class="close-submission-modal" data-id="{{ submission.id }}" style="position:absolute;top:12px;right:18px;font-size:2rem;background:none;border:none;cursor:pointer;color:#2563eb;">&times;</button>
+              <h2 style="color:#2563eb;margin-bottom:1.2rem;font-family:'Orbitron',sans-serif;font-size:1.3rem;letter-spacing:1px;">Submission Details</h2>
+              <div style="margin-bottom:1rem;"><strong>Date:</strong> {{ submission.date|localtime|date:'Y-m-d H:i' }}</div>
+              <div style="margin-bottom:1rem;"><strong>Overview:</strong> {{ submission.overview }}</div>
+              <div style="margin-bottom:1rem;"><strong>Description:</strong><br>{{ submission.text }}</div>
+              <div style="margin-bottom:1rem;"><strong>File:</strong> {% if submission.file %}<a href="{{ submission.file.url }}" target="_blank">View File</a>{% else %}No file{% endif %}</div>
+              <div style="margin-bottom:1rem;"><strong>Status:</strong> {% if submission.approved %}<span style="color:green;">Approved</span>{% else %}<span style="color:orange;">Pending</span>{% endif %}</div>
+              {% if submission.remark %}<div style="margin-bottom:1rem;"><strong>Remark:</strong> {{ submission.remark }}</div>{% endif %}
+              {% if not submission.approved %}
+                <a href="{% url 'edit_submission' submission.id %}" class="btn" style="background:#2563eb;color:#fff;padding:7px 18px;border-radius:7px;text-decoration:none;">Edit</a>
+              {% endif %}
+            </div>
+          </div>
+        </li>
+      {% empty %}
+        <li>No submissions yet.</li>
+      {% endfor %}
+    </ul>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.view-submission-btn').forEach(function(btn) {
+          btn.addEventListener('click', function() {
+            var id = this.getAttribute('data-id');
+            document.getElementById('submission-modal-' + id).style.display = 'block';
+          });
+        });
+        document.querySelectorAll('.close-submission-modal').forEach(function(btn) {
+          btn.addEventListener('click', function() {
+            var id = this.getAttribute('data-id');
+            document.getElementById('submission-modal-' + id).style.display = 'none';
+          });
+        });
+        document.querySelectorAll('.submission-modal').forEach(function(modal) {
+          modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+              modal.style.display = 'none';
+            }
+          });
+        });
+      });
+    </script>
+  </div>
+</div>
+{% endblock %}

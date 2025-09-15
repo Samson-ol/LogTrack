@@ -1,0 +1,80 @@
+body {
+  /* background-color: #e2e8f0; */
+  background-color: #1e293b;
+}
+
+.login-form {
+  /* display: flex;
+  flex-direction: column; */
+  /* justify-content: center; */
+  /* align-items: center; */
+  /* background-color: white; */
+  /* margin: 2rem 20rem 2rem 20rem; */
+  width: 70%;
+}
+
+.login-page {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background-color: #1e293b;
+}
+
+.login-page img {
+  height: 93vh;
+  width: auto;
+}
+
+.login-form {
+  margin-top: 4.5rem ;
+}
+
+.login-form h1 {
+  font-size: 2.9rem;
+  padding: 0.7rem;
+  font-family: 'Orbitron', sans-serif;
+}
+
+.login-form form {
+  padding: 0rem 0rem 2rem 0rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* This centers children horizontally */   
+}
+
+#email, #password1,#password2, #id_user_type, #matric_number, #fullname, #title {
+  width: 100%;
+  padding: 12px 20px;
+  margin-top: 5px;
+  box-sizing: border-box;
+  border-radius: 5px;
+  border: 1px solid blue;
+  background-color: #ebecf0;
+}
+
+#submit {
+  width: 80%;
+  background-color: #2563eb;
+  color: white;
+  padding: 9px 20px;
+  margin-top: 8px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  justify-content: center;
+  font-size: 1.2rem;
+  display: block;
+}
+
+.login-form .label {
+  display: inline;
+}
+
+.input-group {
+  width: 100%;
+}
+
+.login-account {
+  margin-top: 10px;
+  font-size: 1rem;
+  color: white;
+}

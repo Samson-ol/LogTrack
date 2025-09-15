@@ -1,0 +1,127 @@
+/* supervisor_dashboard.css - styled like student_dashboard.css */
+body {
+  background-color: #1e293b;
+}
+
+.login-page {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  background-color: #1e293b;
+  animation: fadeIn 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+.login-form {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(30,41,59,0.13);
+  padding: 2.8rem 2.8rem 2.2rem 2.8rem;
+  margin-top: 3rem;
+  width: 100%;
+  max-width: 1000px;
+  border: 1.5px solid #e0e7ff;
+}
+
+
+.login-form h1 {
+  font-size: 2.4rem;
+  color: #2563eb;
+  margin-bottom: 0.7rem;
+  font-family: 'Orbitron', sans-serif;
+  letter-spacing: 1px;
+}
+
+
+.login-form h3 {
+  color: #1e293b;
+  margin-bottom: 1.2rem;
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+
+.table-container {
+  margin-top: 2.2rem;
+  background: #f8fafc;
+  border-radius: 10px;
+  padding: 1.5rem 1.2rem 1.2rem 1.2rem;
+  box-shadow: 0 2px 8px rgba(30,41,59,0.06);
+}
+
+.supervisor-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: #f1f5f9;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 1px 8px rgba(30,41,59,0.06);
+  margin-bottom: 0;
+}
+.supervisor-table th, .supervisor-table td {
+  padding: 1rem 1.2rem;
+  text-align: left;
+  font-size: 1.05rem;
+}
+.supervisor-table th {
+  background: #2563eb;
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  border-top: none;
+}
+.supervisor-table tr:not(:last-child) {
+  border-bottom: 1px solid #e2e8f0;
+}
+.supervisor-table td {
+  color: #1e293b;
+  background: #f8fafc;
+}
+.approve-btn {
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 7px 20px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
+  box-shadow: 0 1px 4px rgba(30,41,59,0.08);
+}
+.approve-btn:hover {
+  background: #1e293b;
+  box-shadow: 0 2px 8px rgba(30,41,59,0.13);
+}
+span[style*="color:green"] {
+  font-weight: bold;
+  margin-left: 8px;
+}
+span[style*="color:orange"] {
+  font-weight: bold;
+  margin-left: 8px;
+}
+.list-students {
+  margin-bottom: 1.7rem;
+  background: #e0e7ff;
+  border-radius: 10px;
+  padding: 1.3rem 1.5rem;
+  box-shadow: 0 2px 8px rgba(30,41,59,0.06);
+  border-left: 6px solid #2563eb;
+}
+.list-students strong {
+  color: #2563eb;
+}

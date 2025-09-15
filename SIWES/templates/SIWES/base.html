@@ -1,0 +1,78 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LogTack - App</title>
+     <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+      integrity="sha512-...your_integrity_hash..."
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="{% static 'landing.css' %}" >
+    <link rel="stylesheet" href="{% static 'login.css' %}">
+    <link rel="stylesheet" href="{% static 'rules.css' %}">
+    <link rel="stylesheet" href="{% static 'main.css' %}">
+</head>
+<body>
+        <!-- Header section -->
+  <div class="header">
+        <h2>
+            Log<span style="color: rgb(48, 48, 203);">Track</span>
+        </h2>
+
+    <div class="nav-bar">
+    <nav>
+      <a href="{% url 'landing' %}" {% if request.resolver_match.url_name == 'landing' %}class="active"{% endif %}>Home</a>
+      <a href="{% url 'rules' %}" {% if request.resolver_match.url_name == 'rules' %}class="active"{% endif %}>Rules</a>
+      {% if user.is_authenticated %}
+        {% if user.user_type == 'student' %}
+          <a href="{% url 'student_dashboard' %}" {% if request.resolver_match.url_name == 'student_dashboard' %}class="active"{% endif %}>Dashboard</a>
+        {% elif user.user_type == 'supervisor' %}
+          <a href="{% url 'supervisor_dashboard' %}" {% if request.resolver_match.url_name == 'supervisor_dashboard' %}class="active"{% endif %}>Dashboard</a>
+          <a href="{% url 'supervisor_logs' %}" {% if request.resolver_match.url_name == 'supervisor_logs' %}class="active"{% endif %}>View Logs</a>
+        {% endif %}
+        <form action="{% url 'logout' %}" method="post" style="display:inline;">
+          {% csrf_token %}
+          <button type="submit" class="btn" style="margin-left:10px;"><span style="color: white;">Logout</span></button>
+        </form>
+      {% else %}
+        <a href="{% url 'login' %}" {% if request.resolver_match.url_name == 'login' %}class="active"{% endif %}>Login</a>
+        <a href="{% url 'register' %}" class="btn" {% if request.resolver_match.url_name == 'register' %}style="box-shadow:0 0 0 2px #2563eb;"{% endif %}><span style="color: white;">SignUp</span></a>
+      {% endif %}
+</style>
+<style>
+  .nav-bar a.active, .nav-bar .btn.active {
+    box-shadow: 0 0 0 2px #2563eb;
+    background: #2563eb;
+    color: #fff !important;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: background 0.2s;
+  }
+</style>
+    </nav>
+    </div>
+    </div> 
+
+    {% block content %}
+
+
+
+    {% endblock %}
+
+     <footer class="my-footer">
+      <p>&copy; 2025 LogTrack</p>
+      <p>Developer: Samson Oloyede</p>
+    </footer>
+</body>
+</html>

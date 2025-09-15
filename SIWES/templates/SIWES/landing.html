@@ -1,0 +1,160 @@
+{% extends 'SIWES/base.html' %}
+{% load static %}
+
+{% block content %}
+    <section class="hero" id="hero">
+      <div class="hero-container">
+        <div class="hero-content">
+          <h1>
+            A Smarter Way to <br />
+            Record, Track,<br />
+            and Manage Your SIWES Experience
+          </h1>
+
+          <p>
+            Say goodbye to manual log entries, <br />
+            Our platform simplifies your SIWES documentation. <br />
+            Track, update, and manage your daily records from any device,
+            anytime.
+          </p>
+
+          {% if user.is_authenticated %}
+            {% if user.user_type == 'student' %}
+              <a href="{% url 'student_dashboard' %}" class="cta-button">Go to Dashboard</a>
+            {% elif user.user_type == 'supervisor' %}
+              <a href="{% url 'supervisor_dashboard' %}" class="cta-button">Go to Dashboard</a>
+            {% endif %}
+          {% else %}
+            <a href="{% url 'register' %}" class="cta-button">Get Started</a>
+            <a href="{% url 'login' %}" class="cta-button">Sign In</a>
+          {% endif %}
+        </div>
+
+        <div class="hero-image">
+          <img
+            src="{% static 'images/DATICAN_LOGO-removebg-preview.png' %}"
+            alt="Logbook Illustration"
+            class="animated-image"
+          />
+        </div>
+      </div>
+    </section>
+
+    <div class="general">
+      <div class="gen">
+
+        <div class="content">
+          <div class="icon">
+            <img src="https://cdn.jsdelivr.net/npm/@tabler/icons@3.34.1/icons/filled/archive.svg" 
+                  alt="Archive Image">
+          </div>
+          <h2>Daily Records</h2>
+          <p>
+          <!-- The daily work carried out during the periods 
+          of training is to be recorded clearly with sketches and diagram where applicable -->
+          Clearly record tasks with sketches if needed.
+          </p>
+        </div>
+
+        <div class="content">
+          <div class="icon">
+            <img src="https://cdn.jsdelivr.net/npm/@tabler/icons@3.34.1/icons/filled/clock-hour-12.svg" 
+                alt="Clock at 12 icon">
+          </div>
+          <h2>Records Intervals</h2>
+          <p>
+          Students must submit logbooks regularly for supervisor review and progress check.
+          <!-- Students must regularly submit logbooks for review. -->
+          </p>
+        </div>
+      
+
+        <div class="content">
+          <div class="icon">
+            <img src="https://cdn.jsdelivr.net/npm/@tabler/icons@3.34.1/icons/filled/transform.svg"
+             alt="Transform Icon">
+          </div>
+          <h2>Training Lead</h2>
+          <p>
+          The coordinator will review the logbook and comment periodically.
+          </p>
+        </div>
+        
+        <div class="content">
+          <div class="icon">
+            <img
+              src="https://cdn.jsdelivr.net/npm/@tabler/icons/icons/file-report.svg"
+              alt="Report Icon"/>
+          </div>
+            <h2>Instant Reports</h2>
+            <p>
+              Convert daily entries into formatted weekly reports with one click.
+            </p>
+        </div>
+
+        <div class="content">
+          <div class="icon">
+            <img
+              src="https://cdn.jsdelivr.net/npm/@tabler/icons/icons/chart-bar.svg"
+              alt="Progress Icon" >
+          </div>
+            <h2>Track Progress</h2>
+            <p>
+              Monitor your SIWES activity streaks and reporting consistency.
+            </p>
+        </div>
+
+
+        <div class="content">
+          <div class="icon">
+            <img
+              src="https://cdn.jsdelivr.net/npm/@tabler/icons/icons/bell.svg"
+              alt="Reminder Icon">
+          </div>
+            <h2>Set Reminders</h2>
+            <p>
+              Never miss a log update — get automatic daily or weekly reminders.
+            </p>
+        </div>
+
+
+        <div class="content">
+          <div class="icon">
+            <img
+              src="https://cdn.jsdelivr.net/npm/@tabler/icons/icons/upload.svg"
+              alt="Upload Icon">
+          </div>
+            <h2>Upload Files</h2>
+            <p>
+            Attach documents or screenshots to support your log entries.
+            </p>
+        </div>
+
+        <div class="content">
+          <div class="icon">
+          <img
+            src="https://cdn.jsdelivr.net/npm/@tabler/icons/icons/message-2.svg"
+            alt="Feedback Icon">
+          </div>
+           <h2>Supervisor Feedback</h2>
+            <p>
+              Get feedback from your industry or academic supervisor in one place.
+            </p>
+        </div>
+
+        <div class="content">
+          <div class="icon">
+            <img
+              src="https://cdn.jsdelivr.net/npm/@tabler/icons/icons/clipboard-text.svg"
+              alt="Log Activities Icon">
+          </div>
+            <h2>Log Daily Activities</h2>
+            <p>
+              Record your daily training tasks easily — no paper needed.
+            </p>
+        </div>
+
+      </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,66 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+        body { font-family: DejaVu Sans, Arial, sans-serif; background: #f8fafc; color: #1e293b; }
+        .pdf-title { color: #2563eb; font-size: 2rem; text-align: center; margin-bottom: 1.5rem; font-family: 'DejaVu Sans', Arial, sans-serif; }
+        table { width: 100%; border-collapse: collapse; background: #fff; font-size: 0.98rem; table-layout: fixed; }
+        th, td { border: 1px solid #e5e7eb; padding: 8px 6px; vertical-align: top; word-wrap: break-word; }
+        th { background: #e0e7ff; color: #2563eb; font-weight: bold; }
+        tr:nth-child(even) { background: #f1f5f9; }
+        .approved { color: green; font-weight: bold; }
+        .pending { color: orange; font-weight: bold; }
+        .log-text-col { max-width: 320px; word-wrap: break-word; white-space: pre-line; }
+    </style>
+</head>
+<body>
+    <div class="pdf-title">Student Logs History</div> -->
+    <!DOCTYPE html>
+    <html>
+    <head>
+            <meta charset="utf-8">
+            <style>
+                    body { font-family: DejaVu Sans, Arial, sans-serif; background: #f8fafc; color: #1e293b; }
+                    .pdf-title { color: #2563eb; font-size: 2rem; text-align: center; margin-bottom: 1.5rem; font-family: 'DejaVu Sans', Arial, sans-serif; }
+                    .student-block { margin-bottom: 2.5rem; page-break-inside: avoid; }
+                    .student-header { color: #2563eb; font-size: 1.15rem; font-weight: bold; margin-bottom: 0.7rem; }
+                    .log-entry { margin-bottom: 1.2rem; border-left: 4px solid #2563eb; background: #f1f5f9; padding: 1rem 1.2rem; border-radius: 8px; }
+                    .log-date { color: #1e293b; font-weight: 600; margin-bottom: 0.2rem; }
+                    .log-overview { color: #334155; font-style: italic; margin-bottom: 0.2rem; }
+                    .log-text { white-space: pre-line; margin-bottom: 0.2rem; }
+                    .log-file { margin-bottom: 0.2rem; }
+                    .log-status { font-weight: bold; }
+                    .approved { color: green; } 
+                    .pending { color: orange; }
+                    .log-remark { color: #2563eb; }
+            </style>
+    </head>
+    <body>
+                <div class="pdf-title">Student Logs History
+                {% if start_date or end_date %}
+                    ({{ start_date|default:'...' }} to {{ end_date|default:'...' }})
+                {% endif %}
+                </div>
+            {% regroup submissions by student as student_list %}
+            {% for student_group in student_list %}
+                <div class="student-block">
+                    <div class="student-header">
+                        {{ student_group.grouper.get_full_name|default:student_group.grouper.email }} ({{ student_group.grouper.matric_number }})
+                    </div>
+                    {% for submission in student_group.list %}
+                        <div class="log-entry">
+                            <div class="log-date">{{ submission.date|date:'l, Y-m-d H:i' }}</div>
+                            {% if submission.overview %}<div class="log-overview">{{ submission.overview }}</div>{% endif %}
+                            <div class="log-text">{{ submission.text }}</div>
+                            {% if submission.file_url %}<div class="log-file"><a href="{{ submission.file_url }}">Download File</a></div>{% endif %}
+                            <div class="log-status">Status: {% if submission.approved %}<span class="approved">Approved</span>{% else %}<span class="pending">Pending</span>{% endif %}</div>
+                            {% if submission.remark %}<div class="log-remark">Remark: {{ submission.remark }}</div>{% endif %}
+                        </div>
+                    {% empty %}
+                        <div style="color:#b91c1c;font-weight:600;">No logs found for this student.</div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+    </body>
+    </html>

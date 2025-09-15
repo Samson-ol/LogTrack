@@ -1,0 +1,83 @@
+body {
+  background:  #1e293b;
+  font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+  color: #1e293b;
+  margin: 0;
+  padding: 0;
+}
+
+.supervisor-logs-container {
+  max-width: 1200px;
+  margin: 2.5rem auto 4.5rem auto;
+  padding: 2.5rem 2.5rem 2rem 2.5rem;
+  background: #f8fafc;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(30,41,59,0.10);
+}
+
+.supervisor-logs-title {
+  color: #2563eb;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 2.1rem;
+  letter-spacing: 1px;
+  margin-bottom: 2.2rem;
+  text-align: center;
+}
+
+.supervisor-logs-table-container {
+  overflow-x: auto;
+}
+
+.supervisor-logs-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(30,41,59,0.06);
+}
+
+.supervisor-logs-table thead {
+  background: #e0e7ff;
+}
+
+.supervisor-logs-table th {
+  padding: 14px 10px;
+  color: #2563eb;
+  font-size: 1.08rem;
+  font-weight: 700;
+  text-align: left;
+}
+
+.supervisor-logs-table td {
+  padding: 12px 10px;
+}
+
+.supervisor-logs-table tr {
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.supervisor-logs-table td a {
+  color: #2563eb;
+  text-decoration: underline;
+  font-weight: 600;
+}
+
+.supervisor-logs-table td span {
+  font-weight: 600;
+}
+
+.supervisor-logs-table .approved {
+  color: green;
+}
+
+.supervisor-logs-table .pending {
+  color: orange;
+}
+
+.supervisor-logs-table .no-logs {
+  padding: 18px 0;
+  text-align: center;
+  color: #b91c1c;
+  font-weight: 600;
+}
