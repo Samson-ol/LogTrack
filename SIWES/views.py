@@ -136,7 +136,7 @@ class CustomPasswordResetView(PasswordResetView):
     template_name = 'registration/password_reset_form.html'
 
 def landing(request):
-    return render(request, 'SIWES/landing.html')
+    return render(request, 'SIWES/index.html')
 
 def login(request):
     if request.method == 'POST':
