@@ -12,6 +12,27 @@ body {
   /* margin: 2rem 20rem 2rem 20rem; */
   width: 70%;
 }
+  /* Responsive styles */
+  @media (max-width: 900px) {
+    .login-form {
+      width: 95vw;
+      padding: 1.2rem;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .login-page {
+      grid-template-columns: 1fr;
+    }
+    .login-form {
+      width: 98vw;
+      padding: 0.7rem;
+      font-size: 0.97rem;
+    }
+    .login-form h1 {
+      font-size: 1.3rem;
+    }
+  }
 
 .login-page {
   display: grid;

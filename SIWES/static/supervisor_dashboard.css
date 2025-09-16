@@ -1,3 +1,59 @@
+/* Responsive styles */
+@media (max-width: 1200px) {
+  .login-form {
+    max-width: 98vw;
+    padding: 2rem;
+  }
+  .table-container {
+    padding: 1.2rem;
+  }
+}
+
+@media (max-width: 900px) {
+  body, .login-form, .table-container, .supervisor-table th, .supervisor-table td, .list-students {
+    font-size: 0.97rem;
+  }
+  .login-form {
+    max-width: 99vw;
+    padding: 1.2rem;
+  }
+  .table-container {
+    padding: 0.8rem;
+  }
+  .supervisor-table th, .supervisor-table td {
+    padding: 0.7rem 0.6rem;
+    font-size: 0.98rem;
+  }
+}
+
+@media (max-width: 600px) {
+  body, .login-form, .table-container, .supervisor-table th, .supervisor-table td, .list-students {
+    font-size: 0.92rem;
+  }
+  .login-form {
+    padding: 0.7rem;
+    font-size: 0.97rem;
+    max-width: 100vw;
+  }
+  .table-container {
+    padding: 0.3rem;
+  }
+  .login-form h1 {
+    font-size: 1rem;
+  }
+  .login-form h3 {
+    font-size: 0.9rem;
+  }
+  .supervisor-table th, .supervisor-table td {
+    padding: 0.4rem 0.3rem;
+    font-size: 0.93rem;
+  }
+  .list-students {
+    padding: 0.7rem 0.5rem;
+    font-size: 0.97rem;
+  }
+}
+
 /* supervisor_dashboard.css - styled like student_dashboard.css */
 body {
   background-color: #1e293b;

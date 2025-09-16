@@ -1,4 +1,4 @@
-    * {
+* {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
@@ -61,5 +61,44 @@
     border-top-right-radius: 5px; */
     /* margin-left: 5px;
     margin-right: 5px; */
+}
+
+/* --- Enhanced Responsive Styles --- */
+@media (max-width: 1200px) {
+  .header h2 {
+    font-size: 1.3rem;
+    padding-left: 1rem;
+  }
+  nav a {
+    font-size: 1.1rem;
+    padding-right: 0.5rem;
+  }
+}
+@media (max-width: 900px) {
+  body, .header, nav a, .btn {
+    font-size: 0.97rem;
+  }
+}
+@media (max-width: 600px) {
+  body, .header, nav a, .btn {
+    font-size: 0.92rem;
+  }
+  .header {
+    flex-direction: column;
+    height: auto;
+    padding: 0.5rem 0;
+  }
+  .header h2 {
+    font-size: 1rem;
+    padding-left: 0.3rem;
+  }
+  nav a {
+    font-size: 0.95rem;
+    padding-right: 0.2rem;
+  }
+  .btn {
+    padding: 4px 8px;
+    font-size: 0.95rem;
+  }
 }
 

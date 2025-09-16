@@ -173,3 +173,48 @@ body {
     align-items: center;
   }
 }
+
+/* --- Enhanced Responsive Styles --- */
+@media screen and (max-width: 1200px) {
+  .hero .hero-container {
+    grid-template-columns: 1fr;
+    padding: 1.2rem;
+  }
+  .hero .hero-container .hero-content h1 {
+    font-size: 2.2rem;
+  }
+}
+@media screen and (max-width: 900px) {
+  body, .hero, .hero .hero-container .hero-content h1, .hero .hero-container .hero-content p, .cta-button {
+    font-size: 0.97rem;
+  }
+  .hero .hero-container {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+  }
+  .hero .hero-container .hero-content h1 {
+    font-size: 2rem;
+  }
+}
+@media screen and (max-width: 600px) {
+  body, .hero, .hero .hero-container .hero-content h1, .hero .hero-container .hero-content p, .cta-button {
+    font-size: 0.92rem;
+  }
+  .hero {
+    padding: 0.5rem;
+  }
+  .hero .hero-container {
+    grid-template-columns: 1fr;
+    padding: 0.2rem;
+  }
+  .hero .hero-container .hero-content h1 {
+    font-size: 1.2rem;
+  }
+  .hero .hero-container .hero-content p {
+    font-size: 1rem;
+  }
+  .cta-button {
+    padding: 0.5rem 1rem;
+    font-size: 0.95rem;
+  }
+}
