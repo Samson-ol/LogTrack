@@ -11,14 +11,16 @@
     max-width: 99vw;
     padding: 1.2rem;
   }
-  .login-form h1 {
-    font-size: 1.7rem;
-  }
-  .login-form h3 {
+  .login-form h1, .login-form h3 {
     font-size: 1.1rem;
   }
-  body, .login-form, ul li {
-    font-size: 0.97rem;
+  .btn, input, textarea, select {
+    font-size: 0.98rem;
+    padding: 8px 12px;
+  }
+  .input-group input, .input-group textarea {
+    font-size: 0.98rem;
+    padding: 8px 12px;
   }
 }
 @media (max-width: 600px) {
@@ -27,24 +29,34 @@
     font-size: 0.97rem;
     max-width: 100vw;
   }
-  .login-form h1 {
-    font-size: 1.1rem;
-  }
-  .login-form h3 {
+  .login-form h1, .login-form h3 {
     font-size: 0.95rem;
   }
-  ul li {
-    padding: 0.5rem 0.5rem;
-    font-size: 0.93rem;
+  .btn, input, textarea, select {
+    font-size: 0.95rem;
+    padding: 7px 8px;
   }
-  body, .login-form, ul li {
-    font-size: 0.92rem;
+  .input-group input, .input-group textarea {
+    font-size: 0.95rem;
+    padding: 7px 8px;
   }
-  .login-form h1 {
-    font-size: 1rem;
+}
+@media (max-width: 300px) {
+  .login-form {
+    padding: 0.2rem;
+    font-size: 0.85rem;
+    max-width: 100vw;
   }
-  .login-form h3 {
-    font-size: 0.9rem;
+  .login-form h1, .login-form h3 {
+    font-size: 0.85rem;
+  }
+  .btn, input, textarea, select {
+    font-size: 0.85rem;
+    padding: 5px 5px;
+  }
+  .input-group input, .input-group textarea {
+    font-size: 0.85rem;
+    padding: 5px 5px;
   }
 }
 

@@ -27,10 +27,20 @@
         font-weight: bold;
         font-size: 1.5rem;
         font-family: 'Orbitron', sans-serif;
+        display: flex;
+        align-items: center;
+        /* gap: 0.7rem; */
     }
 
     .header h2 span {
       font-family: 'Orbitron', sans-serif;
+    }
+
+    .header img {
+      width: 27px;
+      height: 24px;
+      object-fit: contain;
+      /* margin-right: 0.3rem; */
     }
 
     nav a {
@@ -78,6 +88,10 @@
   body, .header, nav a, .btn {
     font-size: 0.97rem;
   }
+  .header h2 img {
+    width: 18px;
+    height: 18px;
+  }
 }
 @media (max-width: 600px) {
   body, .header, nav a, .btn {
@@ -99,6 +113,27 @@
   .btn {
     padding: 4px 8px;
     font-size: 0.95rem;
+  }
+  .header h2 img {
+    width: 14px;
+    height: 14px;
+  }
+}
+@media (max-width: 1023px) {
+  .register-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 0;
+  }
+  .register-form {
+    margin: 0 auto;
+    align-self: center;
+  }
+  .register-page img {
+    display: none !important;
   }
 }
 

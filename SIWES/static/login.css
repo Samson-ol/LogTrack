@@ -34,6 +34,127 @@ body {
     }
   }
 
+/* --- Enhanced Responsive Structure for Login Page --- */
+@media (max-width: 1200px) {
+  .login-form {
+    max-width: 98vw;
+    padding: 2rem;
+  }
+  .login-form h1 {
+    font-size: 2rem;
+  }
+  .login-page img {
+    width: 350px;
+    max-width: 90vw;
+    height: auto;
+  }
+}
+@media (max-width: 900px) {
+  .login-form {
+    max-width: 99vw;
+    padding: 1.2rem;
+  }
+  .login-form h1 {
+    font-size: 1.5rem;
+  }
+  .login-page img {
+    width: 260px;
+    max-width: 80vw;
+    height: auto;
+  }
+  .login-form .label, .login-account {
+    font-size: 1rem;
+  }
+}
+@media (max-width: 600px) {
+  .login-form {
+    padding: 0.7rem;
+    font-size: 0.97rem;
+    max-width: 100vw;
+  }
+  .login-form h1 {
+    font-size: 1.1rem;
+  }
+  .login-page img {
+    width: 180px;
+    max-width: 95vw;
+    height: auto;
+  }
+  .login-form .label, .login-account {
+    font-size: 0.95rem;
+  }
+}
+@media (max-width: 300px) {
+  .login-form {
+    padding: 0.2rem;
+    font-size: 0.85rem;
+    max-width: 100vw;
+  }
+  .login-form h1 {
+    font-size: 0.85rem;
+  }
+  .login-page img {
+    width: 100px;
+    max-width: 98vw;
+    height: auto;
+  }
+  .login-form .label, .login-account {
+    font-size: 0.85rem;
+  }
+}
+
+/* --- Refined Login Page Layout for Small Screens --- */
+@media (max-width: 900px) {
+  .login-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 100vh;
+    padding: 1rem 0;
+  }
+  .login-form {
+    margin-top: 1.2rem;
+    width: 95vw;
+    max-width: 400px;
+  }
+  .login-page img {
+    margin: 0 auto;
+    display: block;
+    width: 220px;
+    max-width: 80vw;
+    height: auto;
+  }
+}
+@media (max-width: 600px) {
+  .login-page {
+    padding: 0.5rem 0;
+  }
+  .login-form {
+    margin-top: 0.7rem;
+    width: 98vw;
+    max-width: 320px;
+  }
+  .login-page img {
+    width: 100px;
+    max-width: 100px;
+  }
+}
+@media (max-width: 320px) {
+  .login-form {
+    margin-top: 0.2rem;
+    width: 99vw;
+    max-width: 240px;
+  }
+  .login-page img {
+    width: 80px;
+    max-width: 98vw;
+  }
+  .login-form h1 {
+    font-size: 0.75rem;
+  } 
+}
+
 .login-page {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -46,7 +167,7 @@ body {
 }
 
 .login-form {
-  margin-top: 4.5rem ;
+  margin-top: 2.5rem ;
 }
 
 .login-form h1 {
@@ -98,4 +219,26 @@ body {
   margin-top: 10px;
   font-size: 1rem;
   color: white;
+}
+
+@media (max-width: 1023px) {
+  .login-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 0;
+  }
+  .login-form {
+    margin: 0 auto;
+    align-self: center;
+  }
+}
+
+@media (max-width: 1023px) {
+  .login-page img {
+    display: none !important;
+  }
+
 }

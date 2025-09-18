@@ -27,6 +27,7 @@ body {
 /* Responsive styles */
 @media (max-width: 1200px) {
   .supervisor-logs-container {
+    max-width: 98vw;
     padding: 2rem;
   }
   .supervisor-logs-title {
@@ -35,24 +36,46 @@ body {
 }
 
 @media (max-width: 900px) {
-  body, .supervisor-logs-container, .supervisor-logs-title, .supervisor-log-card {
-    font-size: 0.97rem;
+  .supervisor-logs-container {
+    max-width: 99vw;
+    padding: 1.2rem;
+  }
+  .supervisor-logs-title {
+    font-size: 1.2rem;
+  }
+  .supervisor-log-card {
+    padding: 1rem 0.7rem;
+    font-size: 0.98rem;
   }
 }
 
 @media (max-width: 600px) {
-  body, .supervisor-logs-container, .supervisor-logs-title, .supervisor-log-card {
-    font-size: 0.92rem;
-  }
   .supervisor-logs-container {
-    padding: 0.5rem;
+    padding: 0.7rem;
+    font-size: 0.97rem;
+    max-width: 100vw;
   }
   .supervisor-logs-title {
-    font-size: 1.1rem;
+    font-size: 1rem;
   }
   .supervisor-log-card {
-    padding: 0.7rem 0.5rem;
-    font-size: 0.97rem;
+    padding: 0.5rem 0.3rem;
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 300px) {
+  .supervisor-logs-container {
+    padding: 0.2rem;
+    font-size: 0.85rem;
+    max-width: 100vw;
+  }
+  .supervisor-logs-title {
+    font-size: 0.85rem;
+  }
+  .supervisor-log-card {
+    padding: 0.2rem 0.1rem;
+    font-size: 0.85rem;
   }
 }
 
