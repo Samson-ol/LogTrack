@@ -188,7 +188,7 @@ document.addEventListener('DOMContentLoaded', function() {
       <!-- Cards Container -->
       <div class="submissions-cards-container">
         {% for submission in submissions %}
-        <div class="submission-card" style="background:#f8fafc;border-radius:12px;box-shadow:0 4px 12px rgba(30,41,59,0.08);margin-bottom:1.8rem;padding:1.8rem 2rem;border-left: 4px solid {% if submission.approved %}#10b981{% else %}#f59e0b{% endif %};">
+        <div class="submission-card" style="background:#f8fafc;border-radius:12px;box-shadow:0 4px 12px rgba(30,41,59,0.08);margin-bottom:1.8rem;padding:1.8rem 2rem;border-left: 4px solid {% if submission.approved %} #10b981 {% else %}#f59e0b{% endif %};">
           <div class="card-header" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.2rem;flex-wrap:wrap;gap:1rem;">
             <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap;">
               <span style="background:#2563eb;color:#fff;padding:8px 16px;border-radius:8px;font-weight:600;font-size:1rem;">{{ submission.matric_number }}</span>
