@@ -1,22 +1,471 @@
-/* Responsive styles */
-@media (max-width: 1200px) {
-  .login-form {
-    max-width: 98vw;
-    padding: 2rem;
+/* Modern Card-Based Layout for Submissions - Mobile First */
+.submissions-container {
+  width: 100%;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  display: block !important;
+  visibility: visible !important;
+}
+
+.submissions-cards-container {
+  display: flex !important;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+  visibility: visible !important;
+}
+
+.submission-card {
+  background: #f8fafc !important;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(30, 41, 59, 0.08);
+  padding: 1rem;
+  transition: all 0.3s ease;
+  border-left: 4px solid #2563eb;
+  width: 100%;
+  box-sizing: border-box;
+  display: block !important;
+  visibility: visible !important;
+  position: relative;
+  min-height: 200px;
+}
+
+.submission-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(30, 41, 59, 0.12);
+}
+
+.card-header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.status-badge {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: flex-end;
+}
+
+.card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  width: 100%;
+}
+
+.student-info, .description-section, .file-section, .remark-section, .approval-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  width: 100%;
+}
+
+.description-section div, .remark-section div {
+  max-height: 80px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 #f1f5f9;
+  word-wrap: break-word;
+  font-size: 0.9rem;
+}
+
+.description-section div::-webkit-scrollbar,
+.remark-section div::-webkit-scrollbar {
+  width: 4px;
+}
+
+.description-section div::-webkit-scrollbar-track,
+.remark-section div::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 2px;
+}
+
+.description-section div::-webkit-scrollbar-thumb,
+.remark-section div::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 2px;
+}
+
+.no-submissions {
+  text-align: center;
+  padding: 2rem 1rem;
+  background: #f8fafc !important;
+  border-radius: 8px;
+  border: 2px dashed #cbd5e1;
+  width: 100%;
+  box-sizing: border-box;
+  display: block !important;
+  visibility: visible !important;
+  color: #64748b !important;
+  font-size: 1rem;
+}
+
+/* Button Styles - Mobile First */
+.approve-btn {
+  background: #10b981;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.approve-btn:hover {
+  background: #059669;
+  transform: translateY(-1px);
+}
+
+.edit-remark-btn, .save-remark-btn, .cancel-remark-btn {
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.edit-remark-btn:hover {
+  background: #ddd6fe !important;
+  border-color: #7c3aed !important;
+}
+
+.save-remark-btn:hover {
+  background: #1e40af;
+}
+
+.cancel-remark-btn:hover {
+  background: #e5e7eb;
+  border-color: #9ca3af;
+}
+
+.supervisor-table tbody tr:hover {
+  background-color: #f8fafc;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(30, 41, 59, 0.08);
+}
+
+.supervisor-table tbody tr:nth-child(even) {
+  background-color: #f9fafb;
+}
+
+.supervisor-table tbody tr:nth-child(even):hover {
+  background-color: #f1f5f9;
+}
+
+/* Scroll indicator styles */
+.table-container::after {
+  content: "← Scroll horizontally for more content →";
+  position: absolute;
+  bottom: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.85rem;
+  color: #64748b;
+  display: none;
+  font-style: italic;
+}
+
+@media (max-width: 1023px) {
+  .table-container::after {
+    display: block;
   }
+  
   .table-container {
-    padding: 1.2rem;
+    /* Add scroll snap for better mobile UX */
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
   }
+  
   .supervisor-table {
-    font-size: 1.05rem;
+    min-width: 700px;
+  }
+  
+  .supervisor-table th,
+  .supervisor-table td {
+    padding: 12px 10px;
+    font-size: 0.95rem;
   }
 }
 
+@media (max-width: 768px) {
+
+.supervisor-contents {
+  margin-top: 20px !important;
+}
+}
+
+@media (max-width: 640px) {
+  .supervisor-table {
+    min-width: 550px;
+  }
+  
+  .supervisor-table th,
+  .supervisor-table td {
+    padding: 8px 6px;
+    font-size: 0.85rem;
+  }
+  
+  .supervisor-table th {
+    font-size: 0.9rem;
+    padding: 10px 6px;
+  }
+  
+  /* Compact table headers for very small screens */
+  .supervisor-table th div {
+    flex-direction: column;
+    gap: 4px;
+  }
+}
+
+@media (max-width: 480px) {
+  .table-container {
+    margin: 0 -0.5rem 2rem -0.5rem;
+  }
+  
+  .supervisor-table {
+    min-width: 500px;
+  }
+  
+  .supervisor-table th,
+  .supervisor-table td {
+    padding: 6px 4px;
+    font-size: 0.8rem;
+  }
+  
+  .supervisor-table th {
+    font-size: 0.85rem;
+    padding: 8px 4px;
+  }
+}
+
+/* Professional Modal Responsive Design */
+.modal {
+  z-index: 2000 !important;
+}
+
+.modal > div {
+  max-width: 900px;
+  width: 96vw;
+  margin: 4% auto;
+  padding: 2.5rem 3rem 2.2rem 3rem;
+  background: #f8fafc;
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(30, 41, 59, 0.13);
+  position: relative;
+  max-height: 85vh;
+  overflow-y: auto;
+}
+
+@media (max-width: 768px) {
+  .modal > div {
+    width: 95vw;
+    margin: 2% auto;
+    padding: 1.5rem 2rem 1.5rem 2rem;
+    max-height: 90vh;
+    border-radius: 16px;
+  }
+  
+  .modal h2 {
+    font-size: 1.5rem !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .modal > div {
+    width: 98vw;
+    margin: 1% auto;
+    padding: 1rem 1.5rem 1rem 1.5rem;
+    max-height: 95vh;
+    border-radius: 12px;
+  }
+  
+  .modal h2 {
+    font-size: 1.3rem !important;
+    margin-bottom: 1rem !important;
+  }
+  
+  .modal .close-modal {
+    top: 10px !important;
+    right: 15px !important;
+    font-size: 1.5rem !important;
+  }
+  
+  .modal textarea {
+    font-size: 0.9rem !important;
+  }
+  
+  .modal button {
+    font-size: 0.9rem !important;
+    padding: 8px 16px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal > div {
+    padding: 0.8rem 1rem 0.8rem 1rem;
+    border-radius: 8px;
+  }
+  
+  .modal h2 {
+    font-size: 1.1rem !important;
+  }
+  
+  .modal .close-modal {
+    top: 8px !important;
+    right: 12px !important;
+    font-size: 1.3rem !important;
+  }
+}
+
+/* Enhanced Form Elements */
+.supervisor-contents select,
+.supervisor-contents input[type="date"] {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1.5px solid #2563eb;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: white;
+  color: #1e293b;
+  transition: all 0.2s ease;
+}
+
+.supervisor-contents select:focus,
+.supervisor-contents input[type="date"]:focus {
+  outline: none;
+  border-color: #1d4ed8;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+@media (max-width: 768px) {
+  .supervisor-contents select,
+  .supervisor-contents input[type="date"] {
+    padding: 10px 12px;
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .supervisor-contents select,
+  .supervisor-contents input[type="date"] {
+    padding: 8px 10px;
+    font-size: 0.9rem;
+  }
+}
+
+/* List Students Section Enhancement */
+.list-students {
+  background: #e0e7ff;
+  border-left: 6px solid #2563eb;
+  border-radius: 8px;
+  padding: 1.5rem 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 8px rgba(30, 41, 59, 0.06);
+}
+
+@media (max-width: 768px) {
+  .list-students {
+    padding: 1rem 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .list-students h3 {
+    font-size: 1.1rem !important;
+  }
+  
+  .list-students svg {
+    min-width: 24px !important;
+    width: 24px !important;
+    height: 24px !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .list-students {
+    padding: 0.8rem 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .list-students h3 {
+    font-size: 1rem !important;
+  }
+  
+  .list-students svg {
+    min-width: 20px !important;
+    width: 20px !important;
+    height: 20px !important;
+  }
+}
+
+/* Button Enhancements */
+.btn,
+button[type="submit"] {
+  padding: 10px 20px;
+  background: #2563eb;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-height: 40px;
+}
+
+.btn:hover,
+button[type="submit"]:hover {
+  background: #1d4ed8;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+@media (max-width: 768px) {
+  .btn,
+  button[type="submit"] {
+    padding: 8px 16px;
+    font-size: 0.95rem;
+    min-height: 36px;
+  }
+}
+
+@media (max-width: 640px) {
+  .btn,
+  button[type="submit"] {
+    padding: 6px 12px;
+    font-size: 0.9rem;
+    min-height: 32px;
+  }
+}
+
+@media (max-width: 320px) {
+  body {
+    font-size: 0.5rem !important;
+  }
+  
+  .supervisor-contents {
+    margin-top: 20px;
+  }
+
+  .supervisor-contents h3 {
+    font-size: 1rem !important;
+  }
+ .supervisor-contents h1 {
+    font-size: 2rem !important;
+ }
+}
+
 @media (max-width: 900px) {
-  body, .login-form, .table-container, .supervisor-table th, .supervisor-table td, .list-students {
+  body, .supervisor-contents, .table-container, .supervisor-table th, .supervisor-table td, .list-students {
     font-size: 0.97rem;
   }
-  .login-form {
+  .supervisor-contents {
     max-width: 99vw;
     padding: 1.2rem;
   }
@@ -37,86 +486,111 @@
   }
 }
 
-@media (max-width: 600px) {
-  body, .login-form, .table-container, .supervisor-table th, .supervisor-table td, .list-students {
-    font-size: 0.92rem;
+/* Simple Mobile Responsive for Main Container */
+@media (max-width: 768px) {
+  .supervisor-dashboard {
+    padding-top: 0 !important; /* Remove - body already handles header offset */
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
   }
-  .login-form {
-    padding: 0.7rem;
-    font-size: 0.97rem;
-    max-width: 100vw;
+  
+  .supervisor-contents {
+    padding: 1.5rem;
+    border-radius: 12px;
   }
-  .table-container {
-    padding: 0.3rem;
+  
+  .supervisor-contents h1 {
+    font-size: 1.4rem;
   }
-  .login-form h1 {
+  
+  .supervisor-contents h3 {
     font-size: 1rem;
-  }
-  .login-form h3 {
-    font-size: 0.9rem;
-  }
-  .supervisor-table th, .supervisor-table td {
-    padding: 0.4rem 0.3rem;
-    font-size: 0.93rem;
-  }
-  .list-students {
-    padding: 0.7rem 0.5rem;
-    font-size: 0.97rem;
-  }
-  select, input[type="date"], .btn {
-    font-size: 0.95rem;
-    padding: 7px 8px;
-  }
-  h1, h3 {
-    font-size: 1rem;
-  }
-  svg {
-    min-width: 22px !important;
-    width: 22px !important;
-    height: 22px !important;
   }
 }
 
 @media (max-width: 300px) {
-  .login-form, .table-container {
-    padding: 0.2rem;
-    font-size: 0.85rem;
-    max-width: 100vw;
+.submissions-cards-container {
+  font-size: 1rem !important;
+}
+}
+
+
+@media (max-width: 600px) {
+
+  .supervisor-dashboard {
+    padding-top: 0 !important; /* Remove - body already handles header offset */
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
   }
-  .supervisor-table th, .supervisor-table td {
-    padding: 0.2rem 0.1rem;
-    font-size: 0.85rem;
+  
+  .supervisor-contents {
+    padding: 1rem;
+    font-size: 0.95rem;
+    border-radius: 10px;
+    margin-top: 20px;
   }
-  .list-students {
-    padding: 0.3rem 0.2rem;
-    font-size: 0.85rem;
+  
+  .supervisor-contents h1 {
+    font-size: 1.2rem;
+    margin-bottom: 0.8rem;
   }
-  select, input[type="date"], .btn {
-    font-size: 0.85rem;
-    padding: 5px 5px;
+  
+  .supervisor-contents h3 {
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
   }
-  h1, h3 {
-    font-size: 0.85rem;
+}
+
+@media (max-width: 480px) {
+  .supervisor-dashboard {
+    padding-top: 0 !important; /* Remove - body already handles header offset */
+    padding-left: 0.2rem;
+    padding-right: 0.2rem;
   }
-  svg {
-    min-width: 16px !important;
-    width: 16px !important;
-    height: 16px !important;
+  
+  .supervisor-contents {
+    padding: 0.8rem;
+    font-size: 0.9rem;
+    border-radius: 8px;
+  }
+  
+  .supervisor-contents h1 {
+    font-size: 1.1rem;
+    margin-bottom: 0.6rem;
+  }
+  
+  .supervisor-contents h3 {
+    font-size: 0.9rem;
+    margin-bottom: 0.8rem;
   }
 }
 
 /* supervisor_dashboard.css - styled like student_dashboard.css */
 body {
-  background-color: #1e293b;
+  /* background-color: #1e293b; */
+  background-color: #e2e8f0 !important;
 }
 
-.login-page {
+.supervisor-dashboard {
   display: flex;
   justify-content: center;
   align-items: flex-start;
   min-height: 100vh;
-  background-color: #1e293b;
+  background-color: #e2e8f0;
   animation: fadeIn 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+  padding-top: 0; /* Remove - body already handles header offset */
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-bottom: 1rem;
+}
+
+.supervisor-contents {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(30, 41, 59, 0.12);
+  padding: 2rem;
+  width: 100%;
+  max-width: 1200px;
 }
 
 @keyframes fadeIn {
@@ -130,20 +604,7 @@ body {
   }
 }
 
-
-.login-form {
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 8px 32px rgba(30,41,59,0.13);
-  padding: 2.8rem 2.8rem 2.2rem 2.8rem;
-  margin-top: 3rem;
-  width: 100%;
-  max-width: 1000px;
-  border: 1.5px solid #e0e7ff;
-}
-
-
-.login-form h1 {
+.supervisor-contents h1 {
   font-size: 2.4rem;
   color: #2563eb;
   margin-bottom: 0.7rem;
@@ -152,7 +613,7 @@ body {
 }
 
 
-.login-form h3 {
+.supervisor-contents h3 {
   color: #1e293b;
   margin-bottom: 1.2rem;
   font-size: 1.3rem;
@@ -221,6 +682,117 @@ span[style*="color:orange"] {
   font-weight: bold;
   margin-left: 8px;
 }
+/* Progressive Enhancement for Larger Screens */
+@media (min-width: 481px) {
+  .submissions-container {
+    padding: 0.8rem;
+  }
+  
+  .submission-card {
+    padding: 1.2rem;
+    border-radius: 10px;
+  }
+  
+  .card-header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .card-content {
+    gap: 1rem;
+  }
+  
+  .description-section div, .remark-section div {
+    max-height: 100px;
+    font-size: 0.95rem;
+  }
+  
+  .approve-btn {
+    padding: 10px 20px;
+    font-size: 0.95rem;
+  }
+}
+
+@media (min-width: 641px) {
+  .submissions-container {
+    padding: 1rem;
+  }
+  
+  .submission-card {
+    padding: 1.4rem;
+    border-radius: 12px;
+  }
+  
+  .card-content {
+    gap: 1.1rem;
+  }
+  
+  .description-section div, .remark-section div {
+    max-height: 110px;
+    font-size: 1rem;
+  }
+  
+  .approve-btn {
+    padding: 10px 22px;
+    font-size: 1rem;
+  }
+}
+
+@media (min-width: 769px) {
+  .submissions-container {
+    padding: 1.2rem;
+    margin-bottom: 2rem;
+  }
+  
+  .submissions-cards-container {
+    gap: 1.3rem;
+  }
+  
+  .submission-card {
+    padding: 1.6rem;
+  }
+  
+  .card-content {
+    gap: 1.2rem;
+  }
+  
+  .description-section div, .remark-section div {
+    max-height: 120px;
+  }
+  
+  .approve-btn {
+    padding: 10px 24px;
+  }
+}
+
+@media (min-width: 1024px) {
+.supervisor-contents {
+  margin-top: 20px !important;
+}
+
+  .submissions-container {
+    padding: 1.5rem;
+  }
+  
+  .submissions-cards-container {
+    gap: 1.5rem;
+  }
+  
+  .submission-card {
+    padding: 1.8rem 2rem;
+  }
+  
+  .card-content {
+    gap: 1.3rem;
+  }
+  
+  .submission-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(30, 41, 59, 0.12);
+  }
+}
+
 .list-students {
   margin-bottom: 1.7rem;
   background: #e0e7ff;

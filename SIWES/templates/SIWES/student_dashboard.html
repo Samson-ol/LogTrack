@@ -3,8 +3,8 @@
 {% load tz %}
 {% block content %}
 <link rel="stylesheet" href="{% static 'student_dashboard.css' %}">
-<div class="login-page">
-  <div class="login-form">
+<div class="student-dashboard">
+  <div class="student-contents">
     <h1>Welcome, <span style="color: rgb(58, 56, 56); font-family: 'Orbitron', sans-serif;">{{ user.matric_number }} </span></h1>
     {% if supervisor %}
       <div style="background: #e0e7ff; border-left: 6px solid #2563eb; border-radius: 8px; padding: 1rem 1.5rem; margin-bottom: 1.5rem; display: flex; align-items: center; box-shadow: 0 2px 8px rgba(30,41,59,0.06);">

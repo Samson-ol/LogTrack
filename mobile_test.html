@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobile Dashboard Test</title>
+    <link rel="stylesheet" href="SIWES/static/main.css">
+    <link rel="stylesheet" href="SIWES/static/student_dashboard.css">
+    <style>
+        /* Quick test styles */
+        .test-content {
+            background: #fff;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+            border: 2px solid #2563eb;
+        }
+        .debug-info {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: #2563eb;
+            color: white;
+            padding: 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <div class="debug-info">
+        Screen: <span id="screenWidth"></span>px
+    </div>
+    
+    <!-- Simulated Header -->
+    <div class="header" style="background: #2563eb; color: white; padding: 1rem; text-align: center; position: fixed; top: 0; left: 0; right: 0; z-index: 100;">
+        <strong>FIXED HEADER - LogTrack</strong>
+    </div>
+    
+    <!-- Dashboard Content -->
+    <div class="login-page">
+        <div class="login-form">
+            <h1>Dashboard Test</h1>
+            <h3>Testing mobile visibility for screens ≤600px</h3>
+            
+            <div class="test-content">
+                <h4>✅ Content Block 1</h4>
+                <p>This content should be visible on all screen sizes, including mobile devices with screens ≤600px.</p>
+            </div>
+            
+            <div class="test-content">
+                <h4>✅ Content Block 2</h4>
+                <p>If you can see this text clearly on mobile, the dashboard visibility issue has been fixed!</p>
+            </div>
+            
+            <div class="test-content">
+                <h4>📱 Mobile Test Checklist</h4>
+                <ul>
+                    <li>✓ Header is fixed at top</li>
+                    <li>✓ Content is not hidden behind header</li>
+                    <li>✓ No double padding/spacing</li>
+                    <li>✓ Content scrolls properly</li>
+                    <li>✓ Works on screens ≤600px</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Display current screen width
+        function updateScreenWidth() {
+            document.getElementById('screenWidth').textContent = window.innerWidth;
+        }
+        
+        window.addEventListener('resize', updateScreenWidth);
+        updateScreenWidth();
+    </script>
+</body>
+</html>

@@ -16,11 +16,11 @@
       </select>
     </div>
     <div>
-      <label for="start_date" style="font-weight:600;color:#2563eb;">Start Date:</label>
+      <label for="start_date" style="font-weight:600;color:#2563eb;">From:</label>
       <input type="date" name="start_date" id="start_date" value="{{ request.GET.start_date|default:'' }}" style="padding:7px 12px;border-radius:7px;border:1.5px solid #2563eb;font-size:1.05rem;">
     </div>
     <div>
-      <label for="end_date" style="font-weight:600;color:#2563eb;">End Date:</label>
+      <label for="end_date" style="font-weight:600;color:#2563eb;">To:</label>
       <input type="date" name="end_date" id="end_date" value="{{ request.GET.end_date|default:'' }}" style="padding:7px 12px;border-radius:7px;border:1.5px solid #2563eb;font-size:1.05rem;">
     </div>
     <div>
@@ -41,18 +41,18 @@
     <div class="supervisor-logs-cards-container">
       {% for submission in submissions %}
       <div class="supervisor-log-card" style="background:#f1f5f9;border-radius:10px;box-shadow:0 2px 8px rgba(30,41,59,0.07);margin-bottom:1.5rem;padding:1.3rem 1.5rem;display:flex;flex-direction:column;gap:0.7rem;">
-        <div style="display:flex;flex-wrap:wrap;gap:1.2rem;align-items:center;justify-content:space-between;">
-          <div><strong style="color:#2563eb;">Matric:</strong> {{ submission.matric_number }}</div>
-          <div><strong style="color:#2563eb;">Date:</strong> {{ submission.date|localtime|date:'Y-m-d H:i' }}</div>
-          <div><strong style="color:#2563eb;">Status:</strong> {% if submission.approved %}<span class="approved">Approved</span>{% else %}<span class="pending">Pending</span>{% endif %}</div>
+        <div style="flex-wrap:wrap;gap:1.2rem;align-items:center;justify-content:space-between;">
+          <div style="color: black;"><strong style="color:#1e293b;">Matric:</strong> {{ submission.matric_number }}</div>
+          <div style="color: black;"><strong style="color:#1e293b;">Date:</strong> {{ submission.date|localtime|date:'Y-m-d H:i' }}</div> <br>
+          <div style="color: black;"><strong style="color:#1e293b;">Status:</strong> {% if submission.approved %}<span class="approved">Approved</span>{% else %}<span class="pending">Pending</span>{% endif %}</div>
         </div>
-        <div><strong style="color:#1e293b;">Overview:</strong> {{ submission.overview|default:'-' }}</div>
+        <div style="color: black;"><strong style="color:#1e293b;">Overview:</strong> {{ submission.overview|default:'-' }}</div>
         <div><strong style="color:#1e293b;">Description:</strong><br>
-          <span style="display:block;max-height:120px;overflow:auto;background:#e0e7ff;padding:10px 14px;border-radius:8px;margin-top:4px;white-space:pre-line;">{{ submission.text }}</span>
+          <span style="display:block;max-height:120px;overflow:auto;background:rgb(39, 39, 117);padding:10px 14px;border-radius:8px;margin-top:4px;white-space:pre-line;">{{ submission.text }}</span>
         </div>
         <div><strong style="color:#1e293b;">File:</strong> {% if submission.file %}<a href="{{ submission.file.url }}" target="_blank" style="color:#2563eb;text-decoration:underline;">View File</a>{% else %}<span style="color:#b91c1c;">No file</span>{% endif %}</div>
         <div><strong style="color:#1e293b;">Remark:</strong><br>
-          <span style="display:block;max-height:120px;overflow:auto;background:#f1f5f9;padding:10px 14px;border-radius:8px;margin-top:4px;white-space:pre-line;color:#2563eb;">{{ submission.remark|default:'No remark yet.' }}</span>
+          <span style="display:block;max-height:120px;overflow:auto;background:rgb(39, 39, 117); padding:10px 14px;border-radius:8px;margin-top:4px;white-space:pre-line;">{{ submission.remark|default:'No remark yet.' }}</span>
         </div>
       </div>
       {% empty %}

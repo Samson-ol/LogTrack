@@ -129,15 +129,23 @@ body {
 @media (max-width: 600px) {
   .login-page {
     padding: 0.5rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
+  
+  .login-page > div:first-child {
+    display: none !important; /* Hide image container for better mobile UX */
+  }
+  
   .login-form {
     margin-top: 0.7rem;
     width: 98vw;
     max-width: 320px;
   }
+  
   .login-page img {
-    width: 100px;
-    max-width: 100px;
+    display: none !important; /* Hide all images on small screens */
   }
 }
 @media (max-width: 320px) {
@@ -151,7 +159,7 @@ body {
     max-width: 98vw;
   }
   .login-form h1 {
-    font-size: 0.75rem;
+    font-size: 2.5rem !important;
   } 
 }
 
@@ -159,6 +167,7 @@ body {
   display: grid;
   grid-template-columns: 1fr 1fr;
   background-color: #1e293b;
+  margin-top: 0px;
 }
 
 .login-page img {

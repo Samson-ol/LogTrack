@@ -1,22 +1,135 @@
 <script>
-// Filter submissions table by selected student (matric number)
+// Enhanced student filtering and remark editing for card-based layout
 document.addEventListener('DOMContentLoaded', function() {
+  // Student filter functionality - filters both cards and table if it exists
   var select = document.getElementById('student-select');
-  var table = document.querySelector('.table-container table.supervisor-table');
-  if (select && table) {
+  var cardsContainer = document.querySelector('.submissions-cards-container');
+  
+  if (select && cardsContainer) {
     select.addEventListener('change', function() {
       var value = this.value;
-      var rows = table.querySelectorAll('tbody tr');
-      rows.forEach(function(row) {
-        var matricCell = row.querySelector('td');
-        if (!value || (matricCell && matricCell.textContent.trim().startsWith(value))) {
-          row.style.display = '';
+      var cards = cardsContainer.querySelectorAll('.submission-card');
+      cards.forEach(function(card) {
+        var matricElement = card.querySelector('[style*="background:#2563eb"]'); // Find the matric badge
+        if (!value || (matricElement && matricElement.textContent.trim() === value)) {
+          card.style.display = '';
         } else {
-          row.style.display = 'none';
+          card.style.display = 'none';
         }
       });
     });
   }
+
+  // Remark editing functionality
+  document.body.addEventListener('click', function(e) {
+    // Edit remark button clicked
+    if (e.target.classList.contains('edit-remark-btn')) {
+      var id = e.target.getAttribute('data-id');
+      document.getElementById('remark-display-' + id).style.display = 'none';
+      document.getElementById('remark-form-' + id).style.display = 'block';
+      var textarea = document.getElementById('remark-input-' + id);
+      if (textarea) textarea.focus();
+    }
+
+    // Save remark button clicked
+    if (e.target.classList.contains('save-remark-btn')) {
+      var id = e.target.getAttribute('data-id');
+      var textarea = document.getElementById('remark-input-' + id);
+      var status = document.getElementById('remark-status-' + id);
+      var value = textarea.value;
+      
+      status.textContent = 'Saving...';
+      status.style.color = '#f59e0b';
+
+      // Get CSRF token
+      var csrfToken = document.querySelector('input[name=csrfmiddlewaretoken]').value;
+
+      fetch('/supervisor/ajax/edit_remark/' + id + '/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'X-CSRFToken': csrfToken
+        },
+        body: 'remark=' + encodeURIComponent(value)
+      })
+      .then(response => response.json())
+      .then(data => {
+        var remarkText = document.getElementById('remark-text-' + id);
+        var remarkDisplay = document.getElementById('remark-display-' + id);
+        var remarkForm = document.getElementById('remark-form-' + id);
+        var editBtn = document.querySelector('.edit-remark-btn[data-id="' + id + '"]');
+        
+        if (data.success) {
+          remarkText.textContent = data.remark || 'No remark yet.';
+          
+          if (data.remark && data.remark.trim() !== '') {
+            remarkDisplay.style.display = 'block';
+            remarkForm.style.display = 'none';
+            
+            // Ensure edit button exists
+            if (!editBtn) {
+              var btn = document.createElement('button');
+              btn.type = 'button';
+              btn.className = 'edit-remark-btn';
+              btn.setAttribute('data-id', id);
+              btn.style.marginTop = '8px';
+              btn.style.padding = '6px 12px';
+              btn.style.fontSize = '0.9rem';
+              btn.style.background = '#e0e7ff';
+              btn.style.color = '#2563eb';
+              btn.style.borderRadius = '6px';
+              btn.style.border = '1.5px solid #2563eb';
+              btn.style.cursor = 'pointer';
+              btn.style.fontWeight = '600';
+              btn.textContent = 'Edit Remark';
+              
+              var remarkTextDiv = remarkText.closest('div');
+              remarkTextDiv.parentNode.insertBefore(btn, remarkTextDiv.nextSibling);
+            }
+          } else {
+            remarkDisplay.style.display = 'none';
+            remarkForm.style.display = 'block';
+            if (editBtn) editBtn.remove();
+          }
+          
+          status.textContent = 'Saved successfully!';
+          status.style.color = '#10b981';
+          
+          // Clear success message after 3 seconds
+          setTimeout(() => {
+            status.textContent = '';
+          }, 3000);
+        } else {
+          status.textContent = 'Error: ' + (data.error || 'Could not save.');
+          status.style.color = '#dc2626';
+        }
+      })
+      .catch(() => {
+        status.textContent = 'Error: Could not save.';
+        status.style.color = '#dc2626';
+      });
+    }
+
+    // Cancel remark button clicked
+    if (e.target.classList.contains('cancel-remark-btn')) {
+      var id = e.target.getAttribute('data-id');
+      var remarkDisplay = document.getElementById('remark-display-' + id);
+      var remarkForm = document.getElementById('remark-form-' + id);
+      var remarkText = document.getElementById('remark-text-' + id);
+      
+      // Only show display if there's an existing remark
+      if (remarkText.textContent && remarkText.textContent.trim() !== 'No remark yet.') {
+        remarkDisplay.style.display = 'block';
+      } else {
+        remarkDisplay.style.display = 'none';
+      }
+      remarkForm.style.display = 'none';
+      
+      // Clear any status messages
+      var status = document.getElementById('remark-status-' + id);
+      if (status) status.textContent = '';
+    }
+  });
 });
 </script>
 {% extends 'SIWES/base.html' %}
@@ -24,8 +137,8 @@ document.addEventListener('DOMContentLoaded', function() {
 {% load tz %}
 {% block content %}
 <link rel="stylesheet" href="{% static 'supervisor_dashboard.css' %}">
-<div class="login-page">
-  <div class="login-form">
+<div class="supervisor-dashboard">
+  <div class="supervisor-contents">
   <h1>Welcome, <span style="color: rgb(58, 56, 56); font-family: 'Orbitron', sans-serif;"> {% if user.title %}{{ user.title }} {% endif %}{{ user.get_full_name|default:user.email }}</span></h1>
   <h3 style="color:#2563eb; margin-bottom:1.5rem;">You have {{ students|length }} assigned student{{ students|length|pluralize }}.</h3>
     <div class="list-students" style="background: #e0e7ff; border-left: 6px solid #2563eb; border-radius: 8px; padding: 1.5rem 2rem; margin-bottom: 2rem; box-shadow: 0 2px 8px rgba(30,41,59,0.06);">
@@ -46,250 +159,124 @@ document.addEventListener('DOMContentLoaded', function() {
       {% endif %}
     </div>
 
-  <!-- Only one submissions/history container should exist. The below is the correct single container. -->
-    <div class="table-container">
-      <form method="get" id="table-filter-form">
-        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.2rem; flex-wrap: wrap; gap: 1rem;">
-          <h3 style="margin: 0;">Student Submissions</h3>
-          <div style="display:flex;align-items:center;gap:0.7rem;">
-            <button type="submit" class="btn" style="padding: 6px 16px; background: #2563eb; color: #fff;">Filter</button>
+    <!-- Submissions Container -->
+    <div class="submissions-container">
+      <form method="get" id="filter-form">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+          <h3 style="margin: 0; color: #2563eb; font-size: 1.4rem;">Student Submissions</h3>
+          <div style="display:flex;align-items:center;gap:0.7rem;flex-wrap:wrap;">
+            <div style="display:flex;align-items:center;gap:6px;">
+              <label for="filter_date" style="font-weight:600;color:#2563eb;">Date:</label>
+              <input type="date" id="filter_date" name="filter_date" value="{{ filter_date|default:'' }}" style="padding:6px 10px;border-radius:6px;border:1.5px solid #2563eb;font-size:0.98rem;">
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;">
+              <label for="status_filter" style="font-weight:600;color:#2563eb;">Status:</label>
+              <select name="status" id="status_filter" style="padding:6px 10px;border-radius:6px;border:1.5px solid #2563eb;font-size:0.98rem;">
+                <option value="" {% if not status_filter %}selected{% endif %}>All</option>
+                <option value="approved" {% if status_filter == 'approved' %}selected{% endif %}>Approved</option>
+                <option value="pending" {% if status_filter == 'pending' %}selected{% endif %}>Pending</option>
+              </select>
+            </div>
+            <button type="submit" class="btn" style="padding: 8px 18px; background: #2563eb; color: #fff; border: none; border-radius: 6px; font-weight: 600;">Filter</button>
             {% if filter_date or status_filter %}
-              <a href="?" class="btn" style="background: #e0e7ff; color: #2563eb; border: 1px solid #2563eb; margin-left: 6px;">Clear</a>
+              <a href="?" class="btn" style="background: #e0e7ff; color: #2563eb; border: 1.5px solid #2563eb; padding: 8px 18px; text-decoration: none; border-radius: 6px; font-weight: 600;">Clear</a>
             {% endif %}
           </div>
         </div>
-        <table class="supervisor-table">
-        <thead>
-          <tr>
-            <th>Matric Number</th>
-            <th>Student Name</th>
-            <th>
-              <div style="display:flex;align-items:center;gap:6px;">
-                <span>Date</span>
-                <input type="date" id="filter_date" name="filter_date" value="{{ filter_date|default:'' }}" style="padding:3px 7px;border-radius:5px;border:1px solid #2563eb;font-size:0.98rem;">
-              </div>
-            </th>
-            <!-- Description column removed -->
-            <th>File</th>
-            <th>
-              <div style="display:flex;align-items:center;gap:6px;">
-                <span>Status</span>
-                <select name="status" id="status_filter" style="padding:3px 7px;border-radius:5px;border:1px solid #2563eb;font-size:0.98rem;">
-                  <option value="" {% if not status_filter %}selected{% endif %}>All</option>
-                  <option value="approved" {% if status_filter == 'approved' %}selected{% endif %}>Approved</option>
-                  <option value="pending" {% if status_filter == 'pending' %}selected{% endif %}>Pending</option>
-                </select>
-              </div>
-            </th>
-            <!-- Action column removed -->
-          </tr>
-        </thead>
-        <tbody>
+      </form>
+
+      <!-- Cards Container -->
+      <div class="submissions-cards-container">
         {% for submission in submissions %}
-          <tr>
-            <td>
-              <a href="#" class="open-modal" data-id="{{ submission.id }}" style="color:#2563eb;text-decoration:underline;cursor:pointer;">{{ submission.matric_number }}</a>
-              <!-- Modal Popup -->
-              <div id="modal-{{ submission.id }}" class="modal" style="display:none;position:fixed;z-index:1000;left:0;top:0;width:100vw;height:100vh;background:rgba(30,41,59,0.18);overflow:auto;">
-                <div style="background:#f8fafc;max-width:900px;width:96vw;margin:4% auto;padding:2.5rem 3rem 2.2rem 3rem;border-radius:20px;box-shadow:0 8px 32px rgba(30,41,59,0.13);position:relative;max-height:85vh;overflow-y:auto;">
-                  <button class="close-modal" data-id="{{ submission.id }}" style="position:absolute;top:16px;right:22px;font-size:2rem;background:none;border:none;cursor:pointer;color:#2563eb;">&times;</button>
-                  <h2 style="color:#2563eb;margin-bottom:1.2rem;font-family:'Orbitron',sans-serif;font-size:2rem;letter-spacing:1px;">Submission Details</h2>
-                  <div style="margin-bottom:1.1rem;display:flex;gap:1.2rem;align-items:center;">
-                    <span style="background:#e0e7ff;color:#2563eb;padding:6px 16px;border-radius:8px;font-weight:600;font-size:1.05rem;">Date: {{ submission.date|localtime|date:'Y-m-d H:i' }}</span>
-                    <span style="background:#e0e7ff;color:#2563eb;padding:6px 16px;border-radius:8px;font-weight:600;font-size:1.05rem;">Matric: {{ submission.matric_number }}</span>
-                  </div>
-                  <div style="margin-bottom:1.1rem;">
-                    <strong style="color:#1e293b;font-size:1.08rem;">Student Name:</strong>
-                    <span style="color:#2563eb;font-weight:600;font-size:1.08rem;">{{ submission.student.get_full_name|default:submission.student.email }}</span>
-                  </div>
-                  <div style="margin-bottom:1.1rem;">
-                    <strong style="color:#1e293b;font-size:1.08rem;">Description:</strong><br>
-                    <span style="color:#334155;font-size:1.05rem;line-height:1.7;background:#e0e7ff;padding:10px 14px;border-radius:8px;display:block;margin-top:6px;white-space:pre-line;">{{ submission.text }}</span>
-                  </div>
-                  <div style="margin-bottom:1.1rem;">
-                    <strong style="color:#1e293b;font-size:1.08rem;">File:</strong>
-                    {% if submission.file %}
-                      <a href="{{ submission.file.url }}" target="_blank" style="color:#2563eb;text-decoration:underline;font-weight:600;">View File</a>
-                    {% else %}<span style="color:#b91c1c;">No file</span>{% endif %}
-                  </div>
-                  <div style="margin-bottom:1.1rem;">
-                    <strong style="color:#1e293b;font-size:1.08rem;">Status:</strong>
-                    {% if submission.approved %}
-                      <span style="color:green;font-weight:600;">Approved</span>
-                    {% else %}
-                      <span style="color:orange;font-weight:600;">Pending</span>
-                    {% endif %}
-                  </div>
-                  <div style="margin-bottom:1.1rem;">
-                    <strong style="color:#1e293b;font-size:1.08rem;">Remark:</strong>
-                    <span id="remark-text-{{ submission.id }}" {% if not submission.remark %}style="display:none;color:#2563eb;font-weight:600;"{% else %}style="color:#2563eb;font-weight:600;"{% endif %}>{{ submission.remark|default:'No remark yet.' }}</span>
-                    {% if submission.remark %}
-                    <button type="button" class="edit-remark-btn" data-id="{{ submission.id }}" style="margin-left:10px;padding:2px 10px;font-size:0.98rem;background:#e0e7ff;color:#2563eb;border-radius:6px;border:none;cursor:pointer;">Edit</button>
-                    {% endif %}
-                    <form id="remark-form-{{ submission.id }}" class="remark-edit-form" {% if submission.remark %}style="display:none;margin-top:10px;"{% else %}style="display:block;margin-top:10px;"{% endif %} onsubmit="return false;">
-                      {% csrf_token %}
-                      {# For debugging: show the CSRF token input #}
-                      <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
-                      <textarea id="remark-input-{{ submission.id }}" rows="3" style="width:100%;margin-bottom:8px;padding:10px 12px;border-radius:8px;border:1px solid #2563eb;font-size:1.05rem;">{{ submission.remark|default_if_none:'' }}</textarea>
-                      <div style="display:flex;gap:10px;">
-                        <button type="button" class="save-remark-btn" data-id="{{ submission.id }}" style="background:#2563eb;color:#fff;padding:6px 18px;border-radius:6px;border:none;">Save</button>
-                        <button type="button" class="cancel-remark-btn" data-id="{{ submission.id }}" style="background:#e0e7ff;color:#2563eb;padding:6px 18px;border-radius:6px;border:none;">Cancel</button>
-                        <span id="remark-status-{{ submission.id }}" style="margin-left:10px;font-size:0.98rem;"></span>
-                      </div>
-                    </form>
-                  </div>
-                  {% if not submission.approved %}
-                  <form method="post" action="" style="margin-top:1.2rem;">
-                    {% csrf_token %}
-                    <input type="hidden" name="approve_id" value="{{ submission.id }}">
-                    <button type="submit" class="approve-btn" style="width:100%;margin-top:2px;">Approve</button>
-                  </form>
-                  {% endif %}
+        <div class="submission-card" style="background:#f8fafc;border-radius:12px;box-shadow:0 4px 12px rgba(30,41,59,0.08);margin-bottom:1.8rem;padding:1.8rem 2rem;border-left: 4px solid {% if submission.approved %}#10b981{% else %}#f59e0b{% endif %};">
+          <div class="card-header" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.2rem;flex-wrap:wrap;gap:1rem;">
+            <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap;">
+              <span style="background:#2563eb;color:#fff;padding:8px 16px;border-radius:8px;font-weight:600;font-size:1rem;">{{ submission.matric_number }}</span>
+              <span style="background:#e0e7ff;color:#2563eb;padding:8px 16px;border-radius:8px;font-weight:600;font-size:0.95rem;">{{ submission.date|localtime|date:'M j, Y H:i' }}</span>
+            </div>
+            <div class="status-badge">
+              {% if submission.approved %}
+                <span style="background:#dcfce7;color:#166534;padding:6px 14px;border-radius:20px;font-weight:600;font-size:0.9rem;display:inline-flex;align-items:center;gap:4px;">
+                  <span style="width:8px;height:8px;background:#10b981;border-radius:50%;"></span>
+                  Approved
+                </span>
+              {% else %}
+                <span style="background:#fef3c7;color:#92400e;padding:6px 14px;border-radius:20px;font-weight:600;font-size:0.9rem;display:inline-flex;align-items:center;gap:4px;">
+                  <span style="width:8px;height:8px;background:#f59e0b;border-radius:50%;"></span>
+                  Pending
+                </span>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="card-content">
+            <div class="student-info" style="margin-bottom:1.2rem;">
+              <strong style="color:#1e293b;font-size:1.05rem;">Student:</strong>
+              <span style="color:#2563eb;font-weight:600;font-size:1.05rem;margin-left:8px;">{{ submission.student.get_full_name|default:submission.student.email }}</span>
+            </div>
+
+            <div class="description-section" style="margin-bottom:1.2rem;">
+              <strong style="color:#1e293b;font-size:1.05rem;">Description:</strong>
+              <div style="background:#e0e7ff;padding:14px 16px;border-radius:8px;margin-top:6px;max-height:120px;overflow-y:auto;">
+                <span style="color:#334155;font-size:1rem;line-height:1.6;white-space:pre-line;">{{ submission.text }}</span>
+              </div>
+            </div>
+
+            <div class="file-section" style="margin-bottom:1.2rem;">
+              <strong style="color:#1e293b;font-size:1.05rem;">File:</strong>
+              {% if submission.file %}
+                <a href="{{ submission.file.url }}" target="_blank" style="color:#2563eb;text-decoration:underline;font-weight:600;margin-left:8px;">View File</a>
+              {% else %}
+                <span style="color:#b91c1c;margin-left:8px;">No file attached</span>
+              {% endif %}
+            </div>
+
+            <div class="remark-section" style="margin-bottom:1.5rem;">
+              <strong style="color:#1e293b;font-size:1.05rem;">Remark:</strong>
+              <div id="remark-display-{{ submission.id }}" {% if not submission.remark %}style="display:none;"{% endif %}>
+                <div style="background:#f1f5f9;padding:14px 16px;border-radius:8px;margin-top:6px;border-left:3px solid #2563eb;">
+                  <span id="remark-text-{{ submission.id }}" style="color:#334155;font-size:1rem;line-height:1.6;white-space:pre-line;">{{ submission.remark|default:'No remark yet.' }}</span>
+                </div>
+                <button type="button" class="edit-remark-btn" data-id="{{ submission.id }}" style="margin-top:8px;padding:6px 12px;font-size:0.9rem;background:#e0e7ff;color:#2563eb;border-radius:6px;border:1.5px solid #2563eb;cursor:pointer;font-weight:600;">Edit Remark</button>
+              </div>
+              
+              <div id="remark-form-{{ submission.id }}" class="remark-edit-form" {% if submission.remark %}style="display:none;margin-top:8px;"{% else %}style="display:block;margin-top:8px;"{% endif %}>
+                {% csrf_token %}
+                <textarea id="remark-input-{{ submission.id }}" rows="4" placeholder="Enter your remark here..." style="width:100%;margin-bottom:10px;padding:12px 14px;border-radius:8px;border:1.5px solid #2563eb;font-size:1rem;resize:vertical;min-height:100px;">{{ submission.remark|default_if_none:'' }}</textarea>
+                <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+                  <button type="button" class="save-remark-btn" data-id="{{ submission.id }}" style="background:#2563eb;color:#fff;padding:8px 20px;border-radius:6px;border:none;font-weight:600;cursor:pointer;">Save Remark</button>
+                  <button type="button" class="cancel-remark-btn" data-id="{{ submission.id }}" style="background:#f1f5f9;color:#64748b;padding:8px 20px;border-radius:6px;border:1.5px solid #d1d5db;cursor:pointer;">Cancel</button>
+                  <span id="remark-status-{{ submission.id }}" style="margin-left:10px;font-size:0.9rem;font-weight:600;"></span>
                 </div>
               </div>
-            </td>
-            <td>{{ submission.student.get_full_name|default:submission.student.email }}</td>
-            <td>{{ submission.date|localtime|date:'Y-m-d H:i' }}</td>
-            <!-- Description cell removed, shown in modal only -->
-            <td>
-              {% if submission.file %}
-                <a href="{{ submission.file.url }}" target="_blank">View File</a>
-              {% else %}
-                -
-              {% endif %}
-            </td>
-            <td>
-              {% if submission.approved %}
-                <span style="color:green;">Approved</span>
-              {% else %}
-                <span style="color:orange;">Pending</span>
-              {% endif %}
-            </td>
-            <!-- Action cell removed, actions now only in modal -->
-          </tr>
-<script>
-// Modal popup logic and inline remark editing
-document.addEventListener('DOMContentLoaded', function() {
-  document.querySelectorAll('.open-modal').forEach(function(link) {
-    link.addEventListener('click', function(e) {
-      e.preventDefault();
-      var id = this.getAttribute('data-id');
-      document.getElementById('modal-' + id).style.display = 'block';
-    });
-  });
-  document.querySelectorAll('.close-modal').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      var id = this.getAttribute('data-id');
-      document.getElementById('modal-' + id).style.display = 'none';
-    });
-  });
-  // Close modal on background click
-  document.querySelectorAll('.modal').forEach(function(modal) {
-    modal.addEventListener('click', function(e) {
-      if (e.target === modal) {
-        modal.style.display = 'none';
-      }
-    });
-  });
+            </div>
 
-  // Inline remark edit logic
-  // Use event delegation for edit-remark-btn so it works for dynamically added buttons
-  document.body.addEventListener('click', function(e) {
-    if (e.target.classList.contains('edit-remark-btn')) {
-      var id = e.target.getAttribute('data-id');
-      document.getElementById('remark-text-' + id).style.display = 'none';
-      document.getElementById('remark-form-' + id).style.display = 'block';
-      var textarea = document.getElementById('remark-input-' + id);
-      if (textarea) textarea.focus();
-    }
-  });
-  document.querySelectorAll('.cancel-remark-btn').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      var id = this.getAttribute('data-id');
-      document.getElementById('remark-form-' + id).style.display = 'none';
-      // Only show the remark text if a remark exists
-      var remarkText = document.getElementById('remark-text-' + id);
-      if (remarkText.textContent && remarkText.textContent.trim() !== 'No remark yet.') {
-        remarkText.style.display = '';
-      }
-    });
-  });
-  document.querySelectorAll('.save-remark-btn').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      var id = this.getAttribute('data-id');
-      var textarea = document.getElementById('remark-input-' + id);
-      var status = document.getElementById('remark-status-' + id);
-      var value = textarea.value;
-      status.textContent = 'Saving...';
-      // Get CSRF token from the form containing this button
-      var form = document.getElementById('remark-form-' + id);
-      var csrfInput = form.querySelector('input[name=csrfmiddlewaretoken]');
-      var csrfToken = csrfInput ? csrfInput.value : (document.querySelector('input[name=csrfmiddlewaretoken]') ? document.querySelector('input[name=csrfmiddlewaretoken]').value : '');
-      fetch('/supervisor/ajax/edit_remark/' + id + '/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          'X-CSRFToken': csrfToken
-        },
-        body: 'remark=' + encodeURIComponent(value)
-      })
-      .then(response => response.json())
-      .then(data => {
-        var remarkText = document.getElementById('remark-text-' + id);
-        var editBtn = document.querySelector('.edit-remark-btn[data-id="' + id + '"]');
-        var remarkForm = document.getElementById('remark-form-' + id);
-        if (data.success) {
-          remarkText.textContent = data.remark || 'No remark yet.';
-          if (data.remark && data.remark.trim() !== '') {
-            remarkText.style.display = '';
-            remarkForm.style.display = 'none';
-            if (!editBtn) {
-              // Create and insert the edit button if it doesn't exist
-              var btn = document.createElement('button');
-              btn.type = 'button';
-              btn.className = 'edit-remark-btn';
-              btn.setAttribute('data-id', id);
-              btn.style.marginLeft = '10px';
-              btn.style.padding = '2px 10px';
-              btn.style.fontSize = '0.98rem';
-              btn.style.background = '#e0e7ff';
-              btn.style.color = '#2563eb';
-              btn.style.borderRadius = '6px';
-              btn.style.border = 'none';
-              btn.style.cursor = 'pointer';
-              btn.textContent = 'Edit';
-              btn.onclick = function() {
-                remarkText.style.display = 'none';
-                remarkForm.style.display = 'block';
-                var textarea = document.getElementById('remark-input-' + id);
-                if (textarea) textarea.focus();
-              };
-              remarkText.parentNode.insertBefore(btn, remarkText.nextSibling);
-            }
-          } else {
-            remarkText.style.display = 'none';
-            remarkForm.style.display = 'block';
-            if (editBtn) editBtn.remove();
-          }
-          status.textContent = 'Saved!';
-        } else {
-          status.textContent = 'Error: ' + (data.error || 'Could not save.');
-        }
-      })
-      .catch(() => {
-        status.textContent = 'Error: Could not save.';
-        // Debug log for troubleshooting
-        console.error('AJAX error: Could not save remark. Check CSRF token and network.');
-      });
-    });
-  });
-});
-</script>
+            {% if not submission.approved %}
+            <div class="approval-section">
+              <form method="post" action="" style="margin-top:0;">
+                {% csrf_token %}
+                <input type="hidden" name="approve_id" value="{{ submission.id }}">
+                <button type="submit" class="approve-btn" style="background:#10b981;color:#fff;padding:10px 24px;border-radius:8px;border:none;font-weight:600;font-size:1rem;cursor:pointer;display:inline-flex;align-items:center;gap:8px;">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
+                  </svg>
+                  Approve Submission
+                </button>
+              </form>
+            </div>
+            {% endif %}
+          </div>
+        </div>
         {% empty %}
-          <tr><td colspan="7">No submissions yet.</td></tr>
+        <div class="no-submissions" style="text-align:center;padding:3rem 2rem;background:#f8fafc;border-radius:12px;border:2px dashed #cbd5e1;">
+          <svg style="margin:0 auto 1rem auto;color:#94a3b8;" xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4.414A2 2 0 0 0 3 11.586l-2 2V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+          </svg>
+          <h3 style="color:#64748b;margin-bottom:0.5rem;">No submissions found</h3>
+          <p style="color:#94a3b8;margin:0;">There are no student submissions to display with the current filters.</p>
+        </div>
         {% endfor %}
-        </tbody>
-      </table>
+      </div>
     </div>
   </div>
 </div>

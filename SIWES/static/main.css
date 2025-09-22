@@ -6,21 +6,49 @@
 
     body {
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        padding-top: 70px;
+    }
+
+    /* Responsive body padding for header height adjustments */
+    @media (max-width: 768px) {
+        body {
+            padding-top: 60px;
+        }
+    }
+
+    @media (max-width: 600px) {
+        body {
+            padding-top: 55px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        body {
+            padding-top: 50px;
+        }
     }
 
     .header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        background-color: #e2e8f0;
-        height: 50px;
+        background-color: white;
+        /* background-color: #e2e8f0; */
+        /* background-color: rgba(255, 255, 255, 0.3); */
+        height: 70px;
+        position: fixed;
+        z-index: 100;
+        top: 0;
+        left: 0;
+        right: 0;
+        /* bottom: 0; */
     }
 
     .nav-bar {
         padding-right: 1.5rem ;
     }
 
-    .header h2 {
+    .header .name{
         padding-left: 1.5rem;
         /* color: #333; */
         color: #171f2c;
@@ -29,36 +57,78 @@
         font-family: 'Orbitron', sans-serif;
         display: flex;
         align-items: center;
-        /* gap: 0.7rem; */
+        gap: 0.5rem;
     }
 
-    .header h2 span {
+    .header .name-text {
+      color: #171f2c;
+      font-weight: bold;
+      font-size: 1.5rem;
       font-family: 'Orbitron', sans-serif;
     }
 
-    .header img {
-      width: 27px;
-      height: 24px;
-      object-fit: contain;
+    .header .name span {
+      font-family: 'Orbitron', sans-serif;
+    }
+    .header .name span {
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    .header .name img {
+      width: 50px;
+      height: 50px;
       /* margin-right: 0.3rem; */
     }
 
-    nav a {
-        padding-right: 0.7rem;
+    .nav-bar a {
+        padding: 0.5rem;
         text-decoration: none;
         font-size: 1.2rem;
         font-weight: 500;
         color: #333;
+        transition: all 0.2s ease;
+        border-radius: 4px;
     }
 
-    nav a:hover {
+    .nav-bar a:hover {
         color: rgb(31, 31, 132);
+        background-color: rgba(31, 31, 132, 0.1);
     }
 
     .btn {
         background-color: rgb(28, 28, 80);
-        padding: 6px 12px 6px 12px;
+        padding: 1rem;
         border-radius: 5px;
+    }
+
+    .nav-bar a.active {
+      background: #2563eb;
+      color: #fff !important;
+      border-radius: 6px;
+      font-weight: 600;
+      box-shadow: 0 0 0 2px #2563eb;
+      padding: 0.5rem 1rem;
+      transition: all 0.2s ease;
+    }
+    
+    /* Logout button specific styling - separate from nav links */
+    .logout-form .logout-btn {
+      background: transparent;
+      color: #333;
+      border: 1px solid transparent;
+      border-radius: 6px;
+      font-weight: 500;
+      font-size: 1.2rem;
+      margin-left: 10px;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .logout-form .logout-btn:hover {
+      background: #fef2f2;
+      color: #dc2626;
+      border-color: #dc2626;
     }
 
 
@@ -75,50 +145,114 @@
 
 /* --- Enhanced Responsive Styles --- */
 @media (max-width: 1200px) {
-  .header h2 {
+  .header .name {
     font-size: 1.3rem;
     padding-left: 1rem;
   }
-  nav a {
+  .nav-bar a {
     font-size: 1.1rem;
-    padding-right: 0.5rem;
+    padding: 0.4rem 0.6rem;
   }
 }
+
+@media (max-width: 1023px) {
+  .header {
+    padding: 0 1rem;
+  }
+  .header .name {
+    font-size: 1.2rem;
+  }
+  .nav-bar a {
+    font-size: 1rem;
+    padding: 0.4rem 0.5rem;
+  }
+}
+
 @media (max-width: 900px) {
-  body, .header, nav a, .btn {
+  .header .name {
+    font-size: 1.1rem;
+  }
+  .nav-bar a {
     font-size: 0.97rem;
   }
-  .header h2 img {
-    width: 18px;
-    height: 18px;
-  }
 }
-@media (max-width: 600px) {
-  body, .header, nav a, .btn {
-    font-size: 0.92rem;
-  }
+
+@media (max-width: 768px) {
   .header {
-    flex-direction: column;
-    height: auto;
-    padding: 0.5rem 0;
+    height: 60px;
+    padding: 0 0.5rem;
   }
-  .header h2 {
+  .header .name {
     font-size: 1rem;
-    padding-left: 0.3rem;
   }
-  nav a {
-    font-size: 0.95rem;
-    padding-right: 0.2rem;
-  }
-  .btn {
-    padding: 4px 8px;
-    font-size: 0.95rem;
-  }
-  .header h2 img {
-    width: 14px;
-    height: 14px;
+  .header .name img {
+    width: 40px;
+    height: 40px;
   }
 }
+
+@media (max-width: 600px) {
+  .header {
+    height: 55px;
+  }
+  .header .name {
+    font-size: 0.95rem;
+  }
+  .header .name img {
+    width: 35px;
+    height: 35px;
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    height: 50px;
+  }
+  .header .name {
+    font-size: 0.9rem;
+  }
+  .header .name img {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+@media (max-width: 320px) {
+  .header .name {
+    font-size: 0.8rem;
+  }
+  .header .name img {
+    width: 25px;
+    height: 25px;
+  }
+  
+  .my-footer {
+    font-size: 0.8rem;
+    padding: 8px;
+  }
+
+}
+@media (max-width: 300px) {
+  .header .name {
+    font-size: 0.75rem;
+  }
+  .header .name img {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .my-footer {
+    font-size: 0.8rem;
+    padding: 6px;
+  }
+}
+
+@media (max-width: 375px) {
+  .my-footer p {
+    font-size: 0.7rem !important;
+  }
+}
+
 @media (max-width: 1023px) {
   .register-page {
     display: flex;
@@ -134,6 +268,26 @@
   }
   .register-page img {
     display: none !important;
+  }
+}
+
+/* Additional breakpoints for register page */
+@media (max-width: 640px) {
+  .register-page > div:first-child {
+    display: none !important; /* Hide image container for better mobile UX */
+  }
+  
+  .register-form {
+    width: 95vw;
+    max-width: 400px;
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .register-form {
+    width: 98vw;
+    padding: 0.5rem;
   }
 }
 

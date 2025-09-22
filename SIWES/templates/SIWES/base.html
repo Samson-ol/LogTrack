@@ -28,93 +28,353 @@
 <body>
         <!-- Header section -->
   <div class="header">
-        <h2>
-          <img src="{% static 'images/DATICAN LOGO.png' %}" alt="LogTack Logo">
-          Log<span style="color: rgb(48, 48, 203);">Track</span>
-        </h2>
+        <div class="name">
+          <img src="{% static 'images/DATICAN_LOGO-removebg-preview.png' %}" alt="LogTack Logo">
+          <div class="name-text">
+            Log<span style="color: rgb(48, 48, 203);">Track</span>
+          </div>
+
+        </div>
 
     <div class="nav-bar">
-  <nav id="main-nav">
-    <a href="{% url 'landing' %}" {% if request.resolver_match.url_name == 'landing' %}class="active"{% endif %}>Home</a>
-    <a href="{% url 'rules' %}" {% if request.resolver_match.url_name == 'rules' %}class="active"{% endif %}>Rules</a>
-    {% if user.is_authenticated %}
-      {% if user.user_type == 'student' %}
-        <a href="{% url 'student_dashboard' %}" {% if request.resolver_match.url_name == 'student_dashboard' %}class="active"{% endif %}>Dashboard</a>
-      {% elif user.user_type == 'supervisor' %}
-        <a href="{% url 'supervisor_dashboard' %}" {% if request.resolver_match.url_name == 'supervisor_dashboard' %}class="active"{% endif %}>Dashboard</a>
-        <a href="{% url 'supervisor_logs' %}" {% if request.resolver_match.url_name == 'supervisor_logs' %}class="active"{% endif %}>View Logs</a>
-      {% endif %}
-      <form action="{% url 'logout' %}" method="post" style="display:inline;">
-        {% csrf_token %}
-        <button type="submit" class="btn" style="margin-left:10px;"><span style="color: white;">Logout</span></button>
-      </form>
-    {% else %}
-      <a href="{% url 'login' %}" {% if request.resolver_match.url_name == 'login' %}class="active"{% endif %}>Login</a>
-      <a href="{% url 'register' %}" class="btn" {% if request.resolver_match.url_name == 'register' %}style="box-shadow:0 0 0 2px #2563eb;"{% endif %}><span style="color: white;">SignUp</span></a>
-    {% endif %}
-  </nav>
-  <button id="menu-toggle" aria-label="Open menu" style="background:none;border:none;display:none;font-size:2rem;margin-left:10px;cursor:pointer;">
-    <i class="fas fa-bars"></i>
-  </button>
-</div>
+      <nav id="main-nav">
+        <a href="{% url 'landing' %}" {% if request.resolver_match.url_name == 'landing' %}class="active"{% endif %}>Home</a>
+        <a href="{% url 'rules' %}" {% if request.resolver_match.url_name == 'rules' %}class="active"{% endif %}>Rules</a>
+        {% if user.is_authenticated %}
+          {% if user.user_type == 'student' %}
+            <a href="{% url 'student_dashboard' %}" {% if request.resolver_match.url_name == 'student_dashboard' %}class="active"{% endif %}>Dashboard</a>
+          {% elif user.user_type == 'supervisor' %}
+            <a href="{% url 'supervisor_dashboard' %}" {% if request.resolver_match.url_name == 'supervisor_dashboard' %}class="active"{% endif %}>Dashboard</a>
+            <a href="{% url 'supervisor_logs' %}" {% if request.resolver_match.url_name == 'supervisor_logs' %} class="active"{% endif %}>View Logs</a>
+          {% endif %}
+
+          <!-- Logout button as a form to use POST method --> 
+          <form action="{% url 'logout' %}" method="post" class="logout-form">
+            {% csrf_token %}
+            <button type="submit" class="logout-btn">Logout</button>
+          </form>
+        {% else %}
+          <a href="{% url 'login' %}" {% if request.resolver_match.url_name == 'login' %}class="active"{% endif %}>Login</a>
+          <a href="{% url 'register' %}"  {% if request.resolver_match.url_name == 'register' %} class="active" {% endif %}>SignUp</a>
+        {% endif %}
+      </nav>
+      
+      <button id="menu-toggle" aria-label="Open menu" class="menu-toggle-btn">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
+    </div>
 <script>
-  // Mobile menu toggle
-  const menuToggle = document.getElementById('menu-toggle');
-  const mainNav = document.getElementById('main-nav');
-  function checkMenu() {
-    if(window.innerWidth <= 700) {
-      menuToggle.style.display = 'inline-block';
-      mainNav.classList.remove('open');
-      mainNav.style.display = 'block';
-    } else {
-      menuToggle.style.display = 'none';
-      mainNav.classList.remove('open');
-      mainNav.style.display = 'flex';
+  // Professional mobile menu toggle with smooth animations
+  document.addEventListener('DOMContentLoaded', function() {
+    const menuToggle = document.getElementById('menu-toggle');
+    const mainNav = document.getElementById('main-nav');
+    
+    function initializeMenu() {
+      if (window.innerWidth <= 768) {
+        menuToggle.style.display = 'flex';
+        mainNav.classList.remove('open');
+      } else {
+        menuToggle.style.display = 'none';
+        mainNav.classList.remove('open');
+        mainNav.style.display = 'flex';
+      }
     }
-  }
-  menuToggle && menuToggle.addEventListener('click', function() {
-    mainNav.classList.toggle('open');
-    menuToggle.classList.toggle('open');
+    
+    menuToggle.addEventListener('click', function() {
+      mainNav.classList.toggle('open');
+      menuToggle.classList.toggle('active');
+      
+      // Close menu when clicking outside
+      document.addEventListener('click', function closeMenu(e) {
+        if (!mainNav.contains(e.target) && !menuToggle.contains(e.target)) {
+          mainNav.classList.remove('open');
+          menuToggle.classList.remove('active');
+          document.removeEventListener('click', closeMenu);
+        }
+      });
+    });
+    
+    // Close menu when clicking on nav links (mobile UX)
+    mainNav.querySelectorAll('a, button').forEach(link => {
+      link.addEventListener('click', () => {
+        mainNav.classList.remove('open');
+        menuToggle.classList.remove('active');
+      });
+    });
+    
+    window.addEventListener('resize', initializeMenu);
+    initializeMenu();
   });
-  window.addEventListener('resize', checkMenu);
-  document.addEventListener('DOMContentLoaded', checkMenu);
 </script>
 <style>
-  .nav-bar a.active, .nav-bar .btn.active {
+  /* Enhanced navigation UX */
+  .nav-bar {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  
+  #main-nav {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  /* Navigation links styling */
+  #main-nav a {
+    padding: 0.5rem 0.8rem;
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #333;
+    transition: all 0.2s ease;
+    border-radius: 6px;
+    position: relative;
+  }
+  
+  #main-nav a:hover {
+    color: #2563eb;
+    background-color: rgba(37, 99, 235, 0.1);
+  }
+  
+  #main-nav a.active {
     box-shadow: 0 0 0 2px #2563eb;
     background: #2563eb;
     color: #fff !important;
     border-radius: 6px;
     font-weight: 600;
-    transition: background 0.2s;
+    transition: all 0.2s ease;
+    padding: 0.5rem 1rem;
   }
-  @media (max-width: 700px) {
-    .nav-bar nav {
-      transition: max-height 0.35s cubic-bezier(0.4,0,0.2,1), opacity 0.3s;
-      overflow: hidden;
-      max-height: 0;
-      opacity: 0;
-      flex-direction: column;
-      background: #e2e8f0;
+  
+  /* Logout form styling - visually separated */
+  .logout-form {
+    display: inline-flex;
+    margin: 0 0 0 1rem;
+    position: relative;
+  }
+  
+  .logout-form::before {
+    content: '';
+    position: absolute;
+    left: -0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1px;
+    height: 60%;
+    background: #e2e8f0;
+  }
+  
+  /* Separate logout button styling - no active state inheritance */
+  .logout-btn {
+    padding: 0.5rem 1rem;
+    background: transparent;
+    color: #6b7280;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-weight: 500;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .logout-btn:hover {
+    background: #fef2f2;
+    color: #dc2626;
+    border-color: #fecaca;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(220, 38, 38, 0.1);
+  }
+  
+  .logout-btn:active {
+    transform: translateY(0);
+    background: #fee2e2;
+  }
+  
+  .menu-toggle-btn {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    margin-left: 15px;
+    transition: transform 0.3s ease;
+  }
+  
+  .hamburger-line {
+    width: 25px;
+    height: 3px;
+    background-color: #333;
+    margin: 2px 0;
+    transition: all 0.3s ease;
+    border-radius: 2px;
+  }
+  
+  .menu-toggle-btn.active .hamburger-line:nth-child(1) {
+    transform: rotate(-45deg) translate(-5px, 6px);
+  }
+  
+  .menu-toggle-btn.active .hamburger-line:nth-child(2) {
+    opacity: 0;
+  }
+  
+  .menu-toggle-btn.active .hamburger-line:nth-child(3) {
+    transform: rotate(45deg) translate(-5px, -6px);
+  }
+  
+  .nav-bar a.active {
+    box-shadow: 0 0 0 2px #2563eb;
+    background: #2563eb;
+    color: #fff !important;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    padding: 0.5rem 1rem;
+  }
+  
+  /* Separate logout button styling - no active state inheritance */
+  .logout-btn {
+    padding: 0.5rem 1rem;
+    background: transparent;
+    color: #333;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    font-weight: 500;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .logout-btn:hover {
+    background: #fef2f2;
+    color: #dc2626;
+    border-color: #dc2626;
+    transform: translateY(-1px);
+  }
+  
+  .logout-btn:active {
+    transform: translateY(0);
+    background: #fee2e2;
+  }
+  
+  /* Mobile Navigation Styles */
+  @media (max-width: 768px) {
+    .menu-toggle-btn {
+      display: flex;
+    }
+    
+    #main-nav {
       position: absolute;
       top: 60px;
-      right: 10px;
+      right: 0;
+      background: #ffffff;
+      flex-direction: column;
+      width: 250px;
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(30, 41, 59, 0.15);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       z-index: 1000;
-      box-shadow: 0 2px 8px rgba(30,41,59,0.13);
-      border-radius: 10px;
-      padding: 0 1.2rem;
+      border: 1px solid #e2e8f0;
     }
-    .nav-bar nav.open {
-      max-height: 500px;
+    
+    #main-nav.open {
+      max-height: 400px;
       opacity: 1;
-      padding: 1rem 1.2rem;
+      padding: 1.5rem 0;
     }
-    #menu-toggle {
-      display: inline-block !important;
-      transition: transform 0.3s;
+    
+    #main-nav a {
+      padding: 1rem 1.5rem;
+      margin: 0;
+      border-bottom: 1px solid #f1f5f9;
+      transition: all 0.2s ease;
+      font-size: 1.1rem;
     }
-    #menu-toggle.open {
-      transform: rotate(90deg) scale(1.2);
+    
+    #main-nav a:hover {
+      background-color: #f8fafc;
+      padding-left: 2rem;
+    }
+    
+    #main-nav a.active {
+      background: #2563eb;
+      color: #fff !important;
+    }
+
+    #main-nav a:last-of-type {
+      border-bottom: none;
+    }
+    
+    .logout-form {
+      width: 100%;
+      margin: 0;
+      border-top: 1px solid #f1f5f9;
+      padding-top: 0.5rem;
+    }
+    
+    .logout-btn {
+      width: 100%;
+      text-align: left;
+      padding: 1rem 1.5rem;
+      margin: 0;
+      font-size: 1.1rem;
+      border: none;
+      background: transparent;
+      color: #dc2626 !important;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+    
+    .logout-btn:hover {
+      background-color: #fef2f2 !important;
+      padding-left: 2rem;
+      color: #b91c1c !important;
+    }
+  }
+  
+  @media (max-width: 640px) {
+    .header {
+      padding: 0 1rem;
+    }
+    
+    #main-nav {
+      width: calc(100vw - 2rem);
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .header {
+      height: 60px;
+    }
+    
+    .menu-toggle-btn {
+      width: 35px;
+      height: 35px;
+    }
+    
+    .hamburger-line {
+      width: 20px;
+      height: 2px;
+    }
+    
+    #main-nav {
+      top: 50px;
+      width: calc(100vw - 1rem);
+    }
+    
+    #main-nav a, .logout-btn {
+      font-size: 1rem;
+      padding: 0.8rem 1.2rem;
     }
   }
 </style>
@@ -128,9 +388,11 @@
 
     {% endblock %}
 
+
      <footer class="my-footer">
       <p>&copy; 2025 LogTrack</p>
       <p>Developer: Samson Oloyede</p>
     </footer>
+
 </body>
 </html>
