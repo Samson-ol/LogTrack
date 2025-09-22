@@ -1,0 +1,253 @@
+body {
+  /* background-color: #e2e8f0; */
+  background-color: #1e293b;
+}
+
+.login-form {
+  /* display: flex;
+  flex-direction: column; */
+  /* justify-content: center; */
+  /* align-items: center; */
+  /* background-color: white; */
+  /* margin: 2rem 20rem 2rem 20rem; */
+  width: 70%;
+}
+  /* Responsive styles */
+  @media (max-width: 900px) {
+    .login-form {
+      width: 95vw;
+      padding: 1.2rem;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .login-page {
+      grid-template-columns: 1fr;
+    }
+    .login-form {
+      width: 98vw;
+      padding: 0.7rem;
+      font-size: 0.97rem;
+    }
+    .login-form h1 {
+      font-size: 1.3rem;
+    }
+  }
+
+/* --- Enhanced Responsive Structure for Login Page --- */
+@media (max-width: 1200px) {
+  .login-form {
+    max-width: 98vw;
+    padding: 2rem;
+  }
+  .login-form h1 {
+    font-size: 2rem;
+  }
+  .login-page img {
+    width: 350px;
+    max-width: 90vw;
+    height: auto;
+  }
+}
+@media (max-width: 900px) {
+  .login-form {
+    max-width: 99vw;
+    padding: 1.2rem;
+  }
+  .login-form h1 {
+    font-size: 1.5rem;
+  }
+  .login-page img {
+    width: 260px;
+    max-width: 80vw;
+    height: auto;
+  }
+  .login-form .label, .login-account {
+    font-size: 1rem;
+  }
+}
+@media (max-width: 600px) {
+  .login-form {
+    padding: 0.7rem;
+    font-size: 0.97rem;
+    max-width: 100vw;
+  }
+  .login-form h1 {
+    font-size: 1.1rem;
+  }
+  .login-page img {
+    width: 180px;
+    max-width: 95vw;
+    height: auto;
+  }
+  .login-form .label, .login-account {
+    font-size: 0.95rem;
+  }
+}
+@media (max-width: 300px) {
+  .login-form {
+    padding: 0.2rem;
+    font-size: 0.85rem;
+    max-width: 100vw;
+  }
+  .login-form h1 {
+    font-size: 0.85rem;
+  }
+  .login-page img {
+    width: 100px;
+    max-width: 98vw;
+    height: auto;
+  }
+  .login-form .label, .login-account {
+    font-size: 0.85rem;
+  }
+}
+
+/* --- Refined Login Page Layout for Small Screens --- */
+@media (max-width: 900px) {
+  .login-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 100vh;
+    padding: 1rem 0;
+  }
+  .login-form {
+    margin-top: 1.2rem;
+    width: 95vw;
+    max-width: 400px;
+  }
+  .login-page img {
+    margin: 0 auto;
+    display: block;
+    width: 220px;
+    max-width: 80vw;
+    height: auto;
+  }
+}
+@media (max-width: 600px) {
+  .login-page {
+    padding: 0.5rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .login-page > div:first-child {
+    display: none !important; /* Hide image container for better mobile UX */
+  }
+  
+  .login-form {
+    margin-top: 0.7rem;
+    width: 98vw;
+    max-width: 320px;
+  }
+  
+  .login-page img {
+    display: none !important; /* Hide all images on small screens */
+  }
+}
+@media (max-width: 320px) {
+  .login-form {
+    margin-top: 0.2rem;
+    width: 99vw;
+    max-width: 240px;
+  }
+  .login-page img {
+    width: 80px;
+    max-width: 98vw;
+  }
+  .login-form h1 {
+    font-size: 2.5rem !important;
+  } 
+}
+
+.login-page {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background-color: #1e293b;
+  margin-top: 0px;
+}
+
+.login-page img {
+  height: 93vh;
+  width: auto;
+}
+
+.login-form {
+  margin-top: 2.5rem ;
+}
+
+.login-form h1 {
+  font-size: 2.9rem;
+  padding: 0.7rem;
+  font-family: 'Orbitron', sans-serif;
+}
+
+.login-form form {
+  padding: 0rem 0rem 2rem 0rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* This centers children horizontally */   
+}
+
+#email, #password1,#password2, #id_user_type, #matric_number, #fullname, #title {
+  width: 100%;
+  padding: 12px 20px;
+  margin-top: 5px;
+  box-sizing: border-box;
+  border-radius: 5px;
+  border: 1px solid blue;
+  background-color: #ebecf0;
+}
+
+#submit {
+  width: 80%;
+  background-color: #2563eb;
+  color: white;
+  padding: 9px 20px;
+  margin-top: 8px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  justify-content: center;
+  font-size: 1.2rem;
+  display: block;
+}
+
+.login-form .label {
+  display: inline;
+}
+
+.input-group {
+  width: 100%;
+}
+
+.login-account {
+  margin-top: 10px;
+  font-size: 1rem;
+  color: white;
+}
+
+@media (max-width: 1023px) {
+  .login-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 0;
+  }
+  .login-form {
+    margin: 0 auto;
+    align-self: center;
+  }
+}
+
+@media (max-width: 1023px) {
+  .login-page img {
+    display: none !important;
+  }
+
+}

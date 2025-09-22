@@ -1,0 +1,116 @@
+* {
+    border: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+}
+
+body {
+    /* background: linear-gradient(to right, #e2e8f0, #f8fafc); */
+    background-color: #e2e8f0;
+}
+
+.intro-title {
+    background-color:#1e293b;
+    margin: 0px 15px;
+    text-align: center;
+    padding: 30px 10px 10px 30px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.intro-title .intro-contents {
+    padding: 2% 0%;
+    margin-top: 10px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.intro-contents h1{
+    color:#1d4ed8;
+    font-size: 3rem;
+    animation: fadeIn 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+    font-family: 'Orbitron', sans-serif;
+}
+
+.intro-contents p {
+    color: white;
+    font-size: 1rem;
+}
+.rules-contents {
+    /* background: linear-gradient(to right, #e2e8f0, #f8fafc); */
+    background-color: white;
+    color: black !important;
+    padding: 20px;
+    margin: 40px 50px 20px 50px; 
+    border-radius: 10px;
+}
+
+.rules-contents h2 {
+    text-align: center;
+    font-size: 1.9rem;
+    padding: 10px;
+    color: black;
+}
+
+
+.rules-contents p {
+    font-size: 1.2rem;
+    color: black !important;
+}
+
+/* Responsive styles */
+@media (max-width: 1200px) {
+  .rules-contents {
+    margin: 30px 20px 15px 20px;
+    padding: 15px;
+  }
+}
+@media (max-width: 900px) {
+  body, .rules-contents, .rules-contents h2, .rules-contents p, .rules-list liint {
+    font-size: 0.97rem;
+  }
+  .rules-contents {
+    margin: 20px 10px 10px 10px;
+    padding: 10px;
+  }
+}
+@media (max-width: 600px) {
+  body, .rules-contents, .rules-contents h2, .rules-contents p, .rules-list li, .intro-contents h1 {
+    font-size: 0.92rem;
+  }
+    .intro-title {
+        padding: 10px 2px 5px 2px;
+        font-size: 1.2rem;
+    }
+    .intro-title .intro-contents h1 {
+        font-size: 1.8rem;
+    }
+    .rules-contents {
+        margin: 10px 2px 5px 2px;
+        padding: 5px;
+        font-size: 0.98rem;
+    }
+    .rules-contents h2 {
+        font-size: 1.1rem;
+    }
+}
+
+.rules-contents .rules-list {
+    padding: 20px 0px 0px 15px;
+    font-size: 1.2rem;
+    list-style: inside;
+}
+.rules-list li {
+    padding-top: 10px;
+}
+
