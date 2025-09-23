@@ -28,7 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure--2epioxu_fjn0xq3wcge4bhnw(m3vzm03_x=b3yam+0dppu7o1"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['.vercel.app','127.0.0.1','.now.sh']
 # ALLOWED_HOSTS = ['.vercel.app', 'localhost', '127.0.0.1']
@@ -108,6 +108,8 @@ DATABASES = {
 
 
 
+
+
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
@@ -164,12 +166,12 @@ STORAGES = {
     },
 }
 
-from django.core.wsgi import get_wsgi_application
-from whitenoise.middleware import WhiteNoiseMiddleware
-import os
+# from django.core.wsgi import get_wsgi_application
+# from whitenoise.middleware import WhiteNoiseMiddleware
+# import os
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'myproject.settings')
+# os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'myproject.settings')
 
-application = get_wsgi_application()
-application = WhiteNoiseMiddleware(application) # Add this line
-application.add_files(os.path.join(BASE_DIR, 'staticfiles_build', 'static'), prefix='static/')
+# application = get_wsgi_application()
+# application = WhiteNoiseMiddleware(application) # Add this line
+# application.add_files(os.path.join(BASE_DIR, 'staticfiles_build', 'static'), prefix='static/')
