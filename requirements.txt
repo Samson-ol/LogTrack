@@ -1,24 +1,13 @@
-appdirs==1.4.4
-asgiref==3.9.1
-atomicwrites==1.4.0
-distlib==0.4.0
-Django==5.2.5
-env==0.1.0
-gunicorn==23.0.0
-jsonpointer==2.1
-lxml==5.2.1
-matplotlib==3.9.2
-mkl-service==2.4.0
-pipenv==2025.0.4
-protobuf==4.25.3
-pyasn1-modules==0.2.8
-pyls-spyder==0.4.0
-PyQt5==5.15.10
-PyQtWebEngine==5.15.6
-pywin32==305.1
-setuptools==75.1.0
-sqlparse==0.5.3
-virtualenv==20.34.0
-wheel==0.44.0
-whitenoise==6.11.0
+# These packages won't work on Vercel:
+# - mkl-service (Intel Math Kernel Library - Linux version not available)
+# - pywin32 (Windows-only package)
+# - PyQt5 and PyQtWebEngine (GUI packages not needed for web apps)
 
+# Here's a simplified requirements.txt for Django on Vercel:
+asgiref==3.9.1
+Django==5.2.5
+gunicorn==23.0.0
+sqlparse==0.5.3
+whitenoise==6.11.0
+psycopg2-binary==2.9.9
+dj-database-url==2.1.0
