@@ -1,9 +1,9 @@
 {% extends 'SIWES/base.html' %}
 {% load static %}
 {% block content %}
-<link rel="stylesheet" href="{% static 'student_dashboard.css' %}">
-<div class="login-page">
-  <div class="login-form">
+<!-- <link rel="stylesheet" href="{% static 'student_dashboard.css' %}"> -->
+<div class="student-dashboard">
+  <div class="student-contents">
     <h1 style="margin-bottom:1.2rem;">Edit Your Log</h1>
     <form method="post" enctype="multipart/form-data" style="margin-bottom:0;">
       {% csrf_token %}
@@ -17,7 +17,7 @@
       </div>
       <div class="input-group">
         <label for="id_file" style="font-weight:600;color:#2563eb;">File (optional)</label>
-        <input type="file" name="file" id="id_file" class="form-control">
+        <input type="file" name="file" id="id_file" class="form-control" style="color: black;">
         {% if submission.file %}
           <div style="margin-top:0.5rem;">
             <a href="{{ submission.file.url }}" target="_blank" style="color:#2563eb;text-decoration:underline;">Current File</a>
