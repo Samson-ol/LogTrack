@@ -12,8 +12,10 @@ class CustomUser(AbstractUser):
 	email = models.EmailField(unique=True)
 	user_type = models.CharField(max_length=20, choices=USER_TYPE_CHOICES)
 	title = models.CharField(max_length=20, blank=True, null=True, help_text='Title for supervisors (e.g., Dr, Prof, Mr, Mrs)')
+	department = models.CharField(max_length=100, blank=True, null=True, help_text='Department name')
 	matric_number = models.CharField(max_length=20, blank=True, null=True, unique=True)
 	supervisor = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, blank=True, limit_choices_to={'user_type': 'supervisor'}, related_name='students')
+	lecturer_id = models.CharField(max_length=20, blank=True, null=True, help_text='Lecturer ID for supervisors')
 
 	USERNAME_FIELD = 'email'
 	REQUIRED_FIELDS = ['username']

@@ -34,6 +34,9 @@
             {{ form.fullname }}<br><br>
         </div>
         <div class="input-group">
+            {{ form.department }}<br><br>
+        </div>
+        <div class="input-group">
             {{ form.password1 }}<br><br>
         </div>
         <div class="input-group">
@@ -48,6 +51,9 @@
         <div class="input-group" id="matricField" style="display: none;">
             {{ form.matric_number }}<br><br>
         </div>
+        <div class="input-group" id="lecturerField" style="display: none;">
+            {{ form.lecturer_id }}<br><br>
+        </div>
         <button type="submit" id="submit">Register</button>
         <p class="login-account">Already have an account? <a href="{% url 'login' %}" style="text-decoration: none; color: blue;">Login</a></p>
     </form>
@@ -60,16 +66,20 @@ document.addEventListener('DOMContentLoaded', function() {
     var userTypeSelect = document.getElementById('id_user_type');
     var matricField = document.getElementById('matricField');
     var titleField = document.getElementById('titleField');
+    var lecturerField = document.getElementById('lecturerField');
     function toggleFields() {
         if (userTypeSelect.value === 'student') {
             matricField.style.display = 'block';
             titleField.style.display = 'none';
+            lecturerField.style.display = 'none';
         } else if (userTypeSelect.value === 'supervisor') {
             matricField.style.display = 'none';
             titleField.style.display = 'block';
+            lecturerField.style.display = 'block';
         } else {
             matricField.style.display = 'none';
             titleField.style.display = 'none';
+            lecturerField.style.display = 'none';
         }
     }
     if (userTypeSelect) {

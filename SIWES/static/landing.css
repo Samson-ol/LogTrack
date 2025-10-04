@@ -71,8 +71,6 @@ body {
 
 /* --- Enhanced Hero Image Responsiveness --- */
 .hero-image img {
-  width: 350px;
-  max-width: 90vw;
   height: auto;
   display: block;
   margin: 0 auto;

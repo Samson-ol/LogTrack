@@ -30,12 +30,33 @@ class CustomUserCreationForm(UserCreationForm):
             'id': 'email',
         })
     )
+    department = forms.CharField(
+        max_length=100,
+        required=False,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Enter your department...',
+            'id': 'department',
+        })
+    )
     user_type = forms.ChoiceField(
         choices=[('select_role', 'Select role...')] + list(CustomUser.USER_TYPE_CHOICES),
         required=True,
         widget=forms.Select(attrs={
             'class': 'form-control',
             'id': 'id_user_type',
+        })
+    )
+
+    # Add this field to your CustomUserCreationForm class after the matric_number field
+
+    lecturer_id = forms.CharField(
+        max_length=20,
+        required=False,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Enter lecturer ID...',
+            'id': 'lecturer_id',
         })
     )
 
@@ -74,7 +95,7 @@ class CustomUserCreationForm(UserCreationForm):
 
     class Meta:
         model = CustomUser
-        fields = ('fullname', 'email', 'user_type', 'title', 'matric_number', 'password1', 'password2')
+        fields = ('fullname', 'email', 'department', 'user_type', 'title', 'matric_number','lecturer_id', 'password1', 'password2')
 
     def save(self, commit=True):
         import uuid
@@ -86,6 +107,7 @@ class CustomUserCreationForm(UserCreationForm):
             user.last_name = ' '.join(names[1:]) if len(names) > 1 else ''
         user.user_type = self.cleaned_data.get('user_type')
         user.email = self.cleaned_data.get('email')
+        user.department = self.cleaned_data.get('department', '')
         # Generate a unique username if not set
         if not user.username:
             base_username = user.email.split('@')[0]
@@ -99,9 +121,11 @@ class CustomUserCreationForm(UserCreationForm):
         if user.user_type == 'student':
             user.matric_number = self.cleaned_data.get('matric_number')
             user.title = ''
+            user.lecturer_id = None
         else:
             user.matric_number = None
             user.title = self.cleaned_data.get('title', '')
+            user.lecturer_id = self.cleaned_data.get('lecturer_id', '')
         if commit:
             user.save()
         return user
