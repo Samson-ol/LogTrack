@@ -40,10 +40,11 @@ def supervisor_logs(request):
     submissions = submissions.order_by('-date')
     # PDF export
     if request.GET.get('export') == 'pdf':
-        from django.template.loader import get_template
+        from django.template.loader import render_to_string
         from django.http import HttpResponse
         from xhtml2pdf import pisa
-        template = get_template('SIWES/supervisor_logs_pdf.html')
+        from io import BytesIO
+        
         # Build absolute file URLs for each submission
         submissions_with_urls = []
         for s in submissions:
@@ -58,18 +59,24 @@ def supervisor_logs(request):
                 'approved': s.approved,
                 'remark': s.remark,
             })
-        html = template.render({
+        
+        # Render template to string
+        html_string = render_to_string('SIWES/supervisor_logs_pdf.html', {
             'user': user,
             'students': students,
             'submissions': submissions_with_urls,
             'start_date': start_date,
             'end_date': end_date,
         })
+        
+        # Create PDF response
         response = HttpResponse(content_type='application/pdf')
         response['Content-Disposition'] = 'attachment; filename="student_logs.pdf"'
-        pisa_status = pisa.CreatePDF(html, dest=response)
+        
+        # Generate PDF
+        pisa_status = pisa.CreatePDF(html_string, dest=response)
         if pisa_status.err:
-            return HttpResponse('We had some errors with PDF generation <br>' + html)
+            return HttpResponse('We had some errors with PDF generation')
         return response
     return render(request, 'SIWES/supervisor_logs.html', {
         'user': user,
@@ -203,9 +210,11 @@ def student_dashboard(request):
     submissions = submissions.order_by('-date')
     # PDF export for student
     if request.GET.get('export') == 'pdf':
-        from django.template.loader import get_template
+        from django.template.loader import render_to_string
+        from django.http import HttpResponse
         from xhtml2pdf import pisa
-        template = get_template('SIWES/student_logs_pdf.html')
+        
+        # Build submissions data with file URLs
         submissions_with_urls = []
         for s in submissions:
             file_url = request.build_absolute_uri(s.file.url) if s.file else None
@@ -217,13 +226,24 @@ def student_dashboard(request):
                 'approved': s.approved,
                 'remark': s.remark,
             })
+        
         supervisor = user.supervisor if hasattr(user, 'supervisor') else None
-        html = template.render({'submissions': submissions_with_urls, 'user': user, 'supervisor': supervisor})
+        
+        # Render template to string
+        html_string = render_to_string('SIWES/student_logs_pdf.html', {
+            'submissions': submissions_with_urls, 
+            'user': user, 
+            'supervisor': supervisor
+        })
+        
+        # Create PDF response
         response = HttpResponse(content_type='application/pdf')
         response['Content-Disposition'] = 'attachment; filename="my_logs.pdf"'
-        pisa_status = pisa.CreatePDF(html, dest=response)
+        
+        # Generate PDF
+        pisa_status = pisa.CreatePDF(html_string, dest=response)
         if pisa_status.err:
-            return HttpResponse('We had some errors with PDF generation <br>' + html)
+            return HttpResponse('We had some errors with PDF generation')
         return response
     supervisor = user.supervisor if hasattr(user, 'supervisor') else None
     return render(request, 'SIWES/student_dashboard.html', {

@@ -11,5 +11,5 @@ sqlparse==0.5.3
 whitenoise==6.11.0
 psycopg2-binary==2.9.9
 dj-database-url==2.1.0
-xhtml2pdf==0.2.17  # Replace with your actual version
+xhtml2pdf==0.2.17
 Pillow==10.4.0

@@ -37,9 +37,7 @@
             <div class="log-text">{{ log.text }}</div>
             {% if log.file_url %}<div class="log-file"><a href="{{ log.file_url }}">Download File</a></div>{% endif %}
             <div class="log-status">Status: {% if log.approved %}<span class="approved">Approved</span>{% else %}<span class="pending">Pending</span>{% endif %}</div>
-            {% if log.remark %}
-            <div class="log-remark">Remark: {{ log.remark }}</div>
-            {% endif %}
+            {% if log.remark %}<div class="log-remark">Remark: {{ log.remark }}</div>{% endif %}
         </div>
         {% endfor %}
     </div>
