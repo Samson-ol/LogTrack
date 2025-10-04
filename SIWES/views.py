@@ -42,8 +42,6 @@ def supervisor_logs(request):
     if request.GET.get('export') == 'pdf':
         from django.template.loader import render_to_string
         from django.http import HttpResponse
-        from xhtml2pdf import pisa
-        from io import BytesIO
         
         # Build absolute file URLs for each submission
         submissions_with_urls = []
@@ -60,7 +58,7 @@ def supervisor_logs(request):
                 'remark': s.remark,
             })
         
-        # Render template to string
+        # Render your existing template to string
         html_string = render_to_string('SIWES/supervisor_logs_pdf.html', {
             'user': user,
             'students': students,
@@ -69,14 +67,9 @@ def supervisor_logs(request):
             'end_date': end_date,
         })
         
-        # Create PDF response
-        response = HttpResponse(content_type='application/pdf')
-        response['Content-Disposition'] = 'attachment; filename="student_logs.pdf"'
-        
-        # Generate PDF
-        pisa_status = pisa.CreatePDF(html_string, dest=response)
-        if pisa_status.err:
-            return HttpResponse('We had some errors with PDF generation')
+        # Return as HTML with PDF-like styling (your template already has print-friendly CSS)
+        response = HttpResponse(html_string, content_type='text/html')
+        response['Content-Disposition'] = 'inline; filename="student_logs.html"'
         return response
     return render(request, 'SIWES/supervisor_logs.html', {
         'user': user,
@@ -212,7 +205,6 @@ def student_dashboard(request):
     if request.GET.get('export') == 'pdf':
         from django.template.loader import render_to_string
         from django.http import HttpResponse
-        from xhtml2pdf import pisa
         
         # Build submissions data with file URLs
         submissions_with_urls = []
@@ -229,21 +221,16 @@ def student_dashboard(request):
         
         supervisor = user.supervisor if hasattr(user, 'supervisor') else None
         
-        # Render template to string
+        # Render your existing template to string
         html_string = render_to_string('SIWES/student_logs_pdf.html', {
             'submissions': submissions_with_urls, 
             'user': user, 
             'supervisor': supervisor
         })
         
-        # Create PDF response
-        response = HttpResponse(content_type='application/pdf')
-        response['Content-Disposition'] = 'attachment; filename="my_logs.pdf"'
-        
-        # Generate PDF
-        pisa_status = pisa.CreatePDF(html_string, dest=response)
-        if pisa_status.err:
-            return HttpResponse('We had some errors with PDF generation')
+        # Return as HTML with PDF-like styling (your template already has print-friendly CSS)
+        response = HttpResponse(html_string, content_type='text/html')
+        response['Content-Disposition'] = 'inline; filename="my_logs.html"'
         return response
     supervisor = user.supervisor if hasattr(user, 'supervisor') else None
     return render(request, 'SIWES/student_dashboard.html', {

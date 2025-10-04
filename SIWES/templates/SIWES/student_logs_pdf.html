@@ -17,9 +17,39 @@
     .approved { color: green; }
     .pending { color: orange; }
     .log-remark { color: #2563eb; font-size: 1rem; }
+    
+    /* Print styles */
+    @media print {
+        body { background: white !important; }
+        .log-block { border: 1px solid #2563eb; }
+        .student-header { background: #e0e7ff !important; }
+    }
+    
+    /* Print button */
+    .print-button {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        background: #2563eb;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+        z-index: 1000;
+    }
+    .print-button:hover { background: #1d4ed8; }
+    @media print { .print-button { display: none; } }
     </style>
+    <script>
+        function printPage() {
+            window.print();
+        }
+    </script>
 </head>
 <body>
+    <button class="print-button" onclick="printPage()">🖨️ Print/Save as PDF</button>
     <div class="pdf-title">Student Log</div>
     <div class="student-block">
         <div class="student-header">
@@ -33,11 +63,11 @@
         {% for log in submissions %}
         <div class="log-block">
             <div class="log-header">Date: <span class="log-date">{{ log.date|date:'l, Y-m-d H:i' }}</span></div>
-            {% if log.overview %}<div class="log-overview">{{ log.overview }}</div>{% endif %}
-            <div class="log-text">{{ log.text }}</div>
-            {% if log.file_url %}<div class="log-file"><a href="{{ log.file_url }}">Download File</a></div>{% endif %}
+            {% if log.overview %}<div class="log-overview"><span style="color: #1d4ed8;font-weight: bold;">Overview: </span>{{ log.overview }}</div>{% endif %}
+            <div class="log-text"><span style="color: #1d4ed8;font-weight: bold;">Text: </span>  {{ log.text }}</div>
+            {% if log.file_url %}<div class="log-file"><span style="color: #1d4ed8;font-weight: bold;">File: </span><a href="{{ log.file_url }}">Download File</a></div>{% endif %}
             <div class="log-status">Status: {% if log.approved %}<span class="approved">Approved</span>{% else %}<span class="pending">Pending</span>{% endif %}</div>
-            {% if log.remark %}<div class="log-remark">Remark: {{ log.remark }}</div>{% endif %}
+            {% if log.remark %}<div class="log-remark"><span style="color: #1d4ed8;font-weight: bold;">Remark: </span>{{ log.remark }}</div>{% endif %}
         </div>
         {% endfor %}
     </div>
